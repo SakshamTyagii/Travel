@@ -18,10 +18,13 @@ def load_urls_from_csv(filename="../data/scraped_google_maps_urls.csv"):
     try:
         df = pd.read_csv(filename, encoding='utf-8')
         # Ensure required columns exist
-        if 'place_name' not in df.columns or 'place_url' not in df.columns:
-            raise ValueError("CSV must contain 'place_name' and 'place_url' columns")
-        # Convert to list of dictionaries
-        return df[['place_name', 'place_url']].to_dict('records')
+        if 'Location' not in df.columns or 'URL' not in df.columns:
+            raise ValueError("CSV must contain 'Location' and 'URL' columns")
+        # Convert to list of dictionaries with expected column names
+        return df[['Location', 'URL']].rename(columns={
+            'Location': 'place_name',
+            'URL': 'place_url'
+        }).to_dict('records')
     except FileNotFoundError:
         print(f"⚠️ File not found: {filename}")
         print("Make sure the CSV file exists.")

@@ -1,0 +1,839 @@
+City,Location,Layer
+Goa,Calangute Beach,Beaches & other water body
+Goa,Baga Beach,Beaches & other water body
+Goa,Anjuna Beach,Beaches & other water body
+Goa,Vagator Beach,Beaches & other water body
+Goa,Morjim Beach,Beaches & other water body
+Goa,Arambol Beach,Beaches & other water body
+Goa,Colva Beach,Beaches & other water body
+Goa,Palolem Beach,Beaches & other water body
+Goa,Dudhsagar Falls,Beaches & other water body
+Goa,Harvalem Waterfalls,Beaches & other water body
+Goa,Dolphin point,Beaches & other water body
+Goa,Salaulim Dam,Beaches & other water body
+Goa,Mandovi River,Beaches & other water body
+Goa,Zuari River,Beaches & other water body
+Goa,Chapora river,Beaches & other water body
+Goa,Madgaon Junction,Transport
+Goa,Thivim Railway Station,Transport
+Goa,Vasco da Gama Railway Station,Transport
+Goa,Karmali Railway Station,Transport
+Goa,Panaji Bus Stand,Transport
+Goa,Mapusa Bus Stand,Transport
+Goa,Margao Bus Stand,Transport
+Goa,Dabolim Airport (Goa International Airport),Transport
+Goa,Mopa Airport (Manohar International Airport),Transport
+Goa,Chapora Fort,Fort
+Goa,Aguada Fort,Fort
+Goa,Reis Magos Fort,Fort
+Goa,Cabo de Rama Fort,Fort
+Goa,Museum Of Goa,Art and museum
+Goa,Goa Chitra Museum,Art and museum
+Goa,Archaeological Museum of Goa,Art and museum
+Goa,Indian Naval Aviation Museum,Art and museum
+Goa,Goa State Museum,Art and museum
+Goa,Anjuna flea market,Night life
+Goa,Tito's Lane,Night life
+Goa,Casino on cruise,Night life
+Goa,Immaculate Conception Church,Spiritual sites
+Goa,Basilica of Bom Jesus,Spiritual sites
+Goa,Church of St. Francis of Assisi,Spiritual sites
+Goa,Se Cathedral,Spiritual sites
+Goa,Shree Mangesh temple,Spiritual sites
+Goa,Shree Shantadurga Mandir,Spiritual sites
+Goa,Mollem National Park & Bhagwan Mahavir Wildlife Sanctuary,Parks
+Goa,Cotigao Wildlife Sanctuary,Parks
+Goa,Salim Ali Bird Sanctuary,Parks
+Goa,Sahakari Spice Farm,Parks
+Goa,Tropical Spice Plantation,Parks
+Goa,Bondla Wildlife Sanctuary,Parks
+Kolkata,Victoria Memorial,Iconic structures
+Kolkata,"Fort William, India",Iconic structures
+Kolkata,James Prinsep Monument,Iconic structures
+Kolkata,Eden Gardens,Iconic structures
+Kolkata,Howrah Bridge,Iconic structures
+Kolkata,Jorasanko Thakurbari,Art and museum
+Kolkata,Science City - Kolkata,Art and museum
+Kolkata,Marble Palace,Art and museum
+Kolkata,M.P. Birla Planetarium,Art and museum
+Kolkata,Indian Museum,Art and museum
+Kolkata,Nehru Children's Museum,Art and museum
+Kolkata,Netaji Bhawan,Art and museum
+Kolkata,Mother Teresa's tomb,Art and museum
+Kolkata,Metcalfe Hall,Art and museum
+Kolkata,Birla Industrial & Technological Museum,Art and museum
+Kolkata,"Nandan, West Bengal Film Centre & Academy of Fine Arts & Rabindra Sadan",Art and museum
+Kolkata,Sarat Chandra Chattopadhyay Kuthi,Art and museum
+Kolkata,Kolkata Centre for Creativity,Art and museum
+Kolkata,Kalighat Mandir Shaktipeeth,Spiritual sites
+Kolkata,St. Paul Cathedral Church,Spiritual sites
+Kolkata,Dakshineswar Temple,Spiritual sites
+Kolkata,Belur Math,Spiritual sites
+Kolkata,Nakhoda Masjid,Spiritual sites
+Kolkata,"Birla Mandir, Kolkata",Spiritual sites
+Kolkata,Pareshnath Jain Temple kolkata,Spiritual sites
+Kolkata,ISKCON Kolkata Sri Sri Radha Govinda Temple,Spiritual sites
+Kolkata,Gurdwara Sant kutiya,Spiritual sites
+Kolkata,"(Bandel Church) The Basilica of the Holy Rosary, Bandel",Spiritual sites
+Kolkata,Hooghly Imambara,Spiritual sites
+Kolkata,Howrah Junction,Transport
+Kolkata,Netaji Subhash Chandra Bose International Airport,Transport
+Kolkata,Sealdah Railway station,Transport
+Kolkata,Esplanade Bus Stop,Transport
+Kolkata,Babughat Bus Stand,Transport
+Kolkata,Karunamoyee bus stand,Transport
+Kolkata,"Indian Botanic Garden, Acharya Jagadish Chandra Bose",Nature and park
+Kolkata,"Zoological Garden, Alipore",Nature and park
+Kolkata,"Central Park, Salt Lake, Kolkata",Nature and park
+Kolkata,East Calcutta Wetlands,Nature and park
+Kolkata,"Millennium Park, Kolkata",Nature and park
+Kolkata,Eco Park,Nature and park
+Kolkata,Nicco park,Nature and park
+Kolkata,Nalban Park,Nature and park
+Kolkata,Rabindra Sarobar Lake,Nature and park
+Kolkata,Subhas Sarobar Lake,Nature and park
+Kolkata,Kolkata River Cruise,Nature and park
+Kolkata,Sajnekhali Wildlife Sanctuary,Nature and park
+Bangalore,Vidhana Soudha,Iconic structures
+Bangalore,Tipu Sultan's Summer Palace,Iconic structures
+Bangalore,Bengaluru Palace,Iconic structures
+Bangalore,Bengaluru Fort,Iconic structures
+Bangalore,Freedom Park,Iconic structures
+Bangalore,Indian Music Experience Museum,Art and museum
+Bangalore,HAL Heritage Centre and Aerospace Museum,Art and museum
+Bangalore,Visvesvaraya Industrial & Technological Museum,Art and museum
+Bangalore,Jawaharlal Nehru Planetarium,Art and museum
+Bangalore,National Military Memorial Park,Art and museum
+Bangalore,Rangoli Metro Art Center,Art and museum
+Bangalore,National Gallery of Modern Art,Art and museum
+Bangalore,Karnataka Chitrakala Parishath,Art and museum
+Bangalore,Janapada Loka (Karnataka Folk Museum),Art and museum
+Bangalore,Jollywood Studios and Adventures (Film City),Art and museum
+Bangalore,Pyramid Valley International,Spiritual sites
+Bangalore,Shrungagiri Sri Shanmukha Swami Gudi,Spiritual sites
+Bangalore,"St. Mary's Basilica, Bengaluru",Spiritual sites
+Bangalore,ISKCON temple Bangalore,Spiritual sites
+Bangalore,ISKCON Vaikuntha Hill,Spiritual sites
+Bangalore,SRI BIG BULL TEMPLE (Shri Doddabasavanna Temple),Spiritual sites
+Bangalore,Jamia Masjid Bengaluru City,Spiritual sites
+Bangalore,Gurudwara by Ulsoor lake,Spiritual sites
+Bangalore,Sri Banashankari Temple,Spiritual sites
+Bangalore,Cave temple Shri Gavi Gangadhareshwara Swamy Devasthana,Spiritual sites
+Bangalore,Ragigudda Shri Prasanna Anjaneyaswami Temple,Spiritual sites
+Bangalore,Shri Dharmarāya Swamy Temple,Spiritual sites
+Bangalore,Shree Parshwa Susheel Dhaam Shwetamber Jain Temple,Spiritual sites
+Bangalore,Nandi Hills,Nature and park
+Bangalore,Hebbala Lake Park,Nature and park
+Bangalore,Sankey Tank,Nature and park
+Bangalore,Ulsoor Lake,Nature and park
+Bangalore,BTM Madiwala lake,Nature and park
+Bangalore,Jaya Prakash Narayana Biodiversity Park,Nature and park
+Bangalore,Cubbon Park,Nature and park
+Bangalore,Lalbagh Botanical Garden,Nature and park
+Bangalore,Bannerughatta Biological Park,Nature and park
+Bangalore,Muthyala Maduvu Falls (Pearl Valley),Nature and park
+Bangalore,Shivagange,Nature and park
+Bangalore,Dodda Aalada Mara,Nature and park
+Bangalore,Savanadurga Trek,Nature and park
+Bangalore,Manchanabele Dam,Nature and park
+Bangalore,Wonderla Amusement Park,Nature and park
+Bangalore,Krishnarajapuram Railway station,Transport
+Bangalore,KSR Bengaluru City Junction (Bangalore),Transport
+Bangalore,Kempegowda International Airport Bengaluru,Transport
+Bangalore,Majestic Bus Stand,Transport
+Bangalore,Mysore Road Satellite Bus Station,Transport
+Bangalore,"KSRTC Bus Stand , Shanthinagara",Transport
+Delhi,Red Fort,Iconic structures
+Delhi,Rajghat (Mahatma Gandhi memorial),Iconic structures
+Delhi,Agrasen ki Baoli,Iconic structures
+Delhi,Jantar Mantar,Iconic structures
+Delhi,Rashtrapati Bhavan,Iconic structures
+Delhi,India Gate,Iconic structures
+Delhi,"Safdarjung Tomb, Delhi",Iconic structures
+Delhi,Humayun's Tomb,Iconic structures
+Delhi,Qutub Minar,Iconic structures
+Delhi,Feroz Shah Kotla Fort,Iconic structures
+Delhi,Hauz Khas Village complex (Deer park),Iconic structures
+Delhi,Purana Quila,Iconic structures
+Delhi,Tughlaqabad Fort,Iconic structures
+Delhi,Mehrauli Archaeological Park,Iconic structures
+Delhi,Airport Terminal 1 (Indira Gandhi International),Transport
+Delhi,Airport Terminal 3 (Indira Gandhi International),Transport
+Delhi,Airport Terminal 2 (Indira Gandhi International),Transport
+Delhi,Hazrat Nizamuddin,Transport
+Delhi,Sarai Kale Khan ISBT,Transport
+Delhi,Kashmiri Gate ISBT (Maharana Pratap),Transport
+Delhi,New Delhi Railway Station,Transport
+Delhi,Old Delhi Railway Station,Transport
+Delhi,Delhi Sarai Rohilla,Transport
+Delhi,Delhi Cantt Railway Station,Transport
+Delhi,Anand Vihar Railway Station,Transport
+Delhi,Kaushambi bus stand (ISBT Anand Vihar),Transport
+Delhi,Dhaula Kuan Bus Stand,Transport
+Delhi,"Jama Masjid, Delhi",Spiritual sites
+Delhi,Akshardham temple,Spiritual sites
+Delhi,Dargah Nizamuddin Aulia,Spiritual sites
+Delhi,Lotus Temple,Spiritual sites
+Delhi,ISKCON Temple,Spiritual sites
+Delhi,Hanuman Mandir Karol bagh,Spiritual sites
+Delhi,Gurudwara Sri Bangla Sahib,Spiritual sites
+Delhi,Shri Laxmi Narayan Temple (Birla Mandir),Spiritual sites
+Delhi,Chattarpur Mandir,Spiritual sites
+Delhi,Tibetan Monastery (Majnu ka tila),Spiritual sites
+Delhi,"National Science Centre, Delhi",Art and museum
+Delhi,National Crafts Museum & Hastkala Academy,Art and museum
+Delhi,Shankar's International Dolls Museum,Art and museum
+Delhi,"National Museum, New Delhi",Art and museum
+Delhi,National Rail Museum,Art and museum
+Delhi,Sulabh International Museum Of Toilets,Art and museum
+Delhi,Sanskriti Kendra,Art and museum
+Delhi,"Indira Gandhi Memorial Museum, Delhi",Art and museum
+Delhi,Nehru Planetarium,Art and museum
+Delhi,Prime minister Museum & Library,Art and museum
+Delhi,Museum of Illusions,Art and museum
+Delhi,National Zoological Park,Nature and park
+Delhi,Okhla Bird Sanctuary,Nature and park
+Delhi,Central Ridge Forest,Nature and park
+Delhi,Lodhi Garden,Nature and park
+Delhi,Sanjay Van,Nature and park
+Delhi,The Garden of Five Senses,Nature and park
+Delhi,Indraprastha Park,Nature and park
+Delhi,Nehru Park,Nature and park
+Delhi,Connaught Place,"Shopping, food & nightlife"
+Chennai,Chennai International Airport,Transport
+Chennai,Chennai Mofussil Bus Terminus (CMBT) Koyambedu,Transport
+Chennai,Egmore Railway Station,Transport
+Chennai,Chennai Central Railway Station,Transport
+Chennai,Madhavaram Mofussil Bus Terminus,Transport
+Chennai,Mahabalipuram Shore Temple,Spiritual sites
+Chennai,Arulmigu Kanthasamy Temple Thiruporur,Spiritual sites
+Chennai,ISKCON Chennai,Spiritual sites
+Chennai,Arulmigu Sri Varadharaja Perumal Temple,Spiritual sites
+Chennai,Arulmigu Thiruthani Murugan Temple,Spiritual sites
+Chennai,Sri Kamakshi Amman Temple mangadu,Spiritual sites
+Chennai,St. Thomas Mount,Spiritual sites
+Chennai,Arulmigu Vadapalani Murugan Temple,Spiritual sites
+Chennai,Kandhakottam Temple,Spiritual sites
+Chennai,Walajah Big Mosque,Spiritual sites
+Chennai,Arulmigu Sri Parthasarathy Perumal Temple Tiruvallikeni,Spiritual sites
+Chennai,San Thome Basilica,Spiritual sites
+Chennai,Kapaleeshwarar Temple,Spiritual sites
+Chennai,Arulmigu Marundeeswarar Temple,Spiritual sites
+Chennai,"Shri Ashtalakshmi Temple, Chennai",Spiritual sites
+Chennai,Annai Velankanni Shrine,Spiritual sites
+Chennai,Marina Beach,Nature
+Chennai,Edward Elliot's Beach (Besant Nagar Beach),Nature
+Chennai,Thiruvalluvar Nagar Beach (Breezy Beach),Nature
+Chennai,Neelangarai Beach (Olive Beach),Nature
+Chennai,Kovalam Beach,Nature
+Chennai,The Madras Crocodile Bank Trust and Centre for Herpetology,Nature
+Chennai,Kovalam Creek (The Great Salt Lake),Nature
+Chennai,Arignar Anna Zoological Park,Nature
+Chennai,Vedanthangal Bird Sanctuary,Nature
+Chennai,Snake Park (Guindy National Park),Nature
+Chennai,Puzhal Lake (Red Hills Lake),Nature
+Chennai,Chembarambakkam Lake,Nature
+Chennai,Adyar River,Nature
+Chennai,Cooum River,Nature
+Chennai,Adyar Eco-Park (Tholkappia Poonga),Nature
+Chennai,Semmozhi Poonga,Nature
+Chennai,Anna Nagar Tower Park,Nature
+Chennai,Chennai Rail Museum,Art and museum
+Chennai,Dakshina Chitra Heritage Museum,Art and museum
+Chennai,Cholamandal Artists Village,Art and museum
+Chennai,Kalakshetra Foundation,Art and museum
+Chennai,B.M. Birla Planetarium,Art and museum
+Chennai,Vivekananda House (Ice House),Art and museum
+Chennai,Fort St. George Museum,Art and museum
+Chennai,Government Museum Chennai,Art and museum
+Chennai,Lalit Kala Academy,Art and museum
+Chennai,VGP Universal Kingdom,Amusement park
+Chennai,MGM Dizzee World,Amusement park
+Chennai,Queensland Amusement Park,Amusement park
+Hyderabad,Rajiv Gandhi International Airport,Transport
+Hyderabad,Jubilee Bus Station (JBS),Transport
+Hyderabad,Secunderabad Junction,Transport
+Hyderabad,Mahatma Gandhi Bus Station (MGBS),Transport
+Hyderabad,Hyderabad Deccan (Nampally) Railway Station,Transport
+Hyderabad,Kacheguda Railway Station,Transport
+Hyderabad,Charminar,Iconic structures
+Hyderabad,Chowmahalla Palace,Iconic structures
+Hyderabad,Golconda Fort,Iconic structures
+Hyderabad,Qutub Shahi Tombs,Iconic structures
+Hyderabad,Bhuvanagiri Fort,Iconic structures
+Hyderabad,Buddha statue in Hussain Sagar,Iconic structures
+Hyderabad,B.M. Birla Science Center,Art and museum
+Hyderabad,Telangana State Archaeology Museum,Art and museum
+Hyderabad,Shilparamam,Art and museum
+Hyderabad,Salar Jung Museum,Art and museum
+Hyderabad,The Nizam's Museum,Art and museum
+Hyderabad,Ramoji Film City,Art and museum
+Hyderabad,Kalakriti Art Gallery,Art and museum
+Hyderabad,Falaknuma Palace,Art and museum
+Hyderabad,Sri Chilkur Balaji Temple,Spiritual sites
+Hyderabad,Sri Peddamma Talli Temple,Spiritual sites
+Hyderabad,"Sri Jagannath Mandir, Banjara Hills",Spiritual sites
+Hyderabad,"Birla Mandir, Hyderabad",Spiritual sites
+Hyderabad,"Gurudwara Saheb, Ameerpet",Spiritual sites
+Hyderabad,ISKCON - Sri Sri Radha Madan Mohan Temple,Spiritual sites
+Hyderabad,St Joseph's Cathedral,Spiritual sites
+Hyderabad,Makkah Masjid,Spiritual sites
+Hyderabad,Keesaragutta Sri Rama Lingeshwara Swamy Temple,Spiritual sites
+Hyderabad,Yadadri Sri Lakshmi Narasimha Swamy Devastanam,Spiritual sites
+Hyderabad,C.S.I All Saints' Church,Spiritual sites
+Hyderabad,C.S.I Medak Cathedral,Spiritual sites
+Hyderabad,Shri Shirdi Sai Baba Sansthan Trust,Spiritual sites
+Hyderabad,"Shri Ashtalakshmi Temple, Hyderabad",Spiritual sites
+Hyderabad,Sri Karmanghat Hanuman Devastanam,Spiritual sites
+Hyderabad,Sri Bhramaramba Mallikarjuna Swamy varla Devasthanam,Spiritual sites
+Hyderabad,Kanha Shanti Vanam,Spiritual sites
+Hyderabad,Sanghi Temple,Spiritual sites
+Hyderabad,Osman Sagar,Nature
+Hyderabad,Himayat Sagar Lake,Nature
+Hyderabad,Nehru Zoological Park,Nature
+Hyderabad,Sri Kotla Vijaybhaskar Reddy Botanical Garden,Nature
+Hyderabad,Gandipet Landscape Park,Nature
+Hyderabad,Durgam Cheruvu Secret Lake,Nature
+Hyderabad,Lumbini Park,Nature
+Hyderabad,NTR Gardens,Nature
+Hyderabad,Sanjeevaiah Children's Park,Nature
+Hyderabad,Indira Park,Nature
+Hyderabad,Safilguda Lake Park,Nature
+Hyderabad,Shamirpet lake Deer Park,Nature
+Hyderabad,Kasu Brahmanandha Reddy National Park (KBR),Nature
+Hyderabad,Lotus Pond,Nature
+Hyderabad,Krishna Kanth Park,Nature
+Mumbai,Airport Terminal 2 (Chhatrapati Shivaji Maharaj International),Transport
+Mumbai,Airport Terminal 1 (Chhatrapati Shivaji Maharaj International),Transport
+Mumbai,Bandra Terminus,Transport
+Mumbai,Lokmanya Tilak Terminus (LTT),Transport
+Mumbai,Dadar Railway Station,Transport
+Mumbai,Mumbai Central Railway Station,Transport
+Mumbai,Chhatrapati Shivaji Maharaj Terminus,Transport
+Mumbai,Kurla Nehru Nagar ST,Transport
+Mumbai,Mumbai Central Bus Depot [MSRTC],Transport
+Mumbai,MSRTC Shivneri Bus stand Dadar,Transport
+Mumbai,MSRTC Bus stand Thane - Vandana,Transport
+Mumbai,Borivali Nancy Colony Bus Stand,Transport
+Mumbai,Dukaan Borivali East,Transport
+Mumbai,Elephanta Caves,Iconic structures
+Mumbai,Kanheri Caves,Iconic structures
+Mumbai,Vasai Fort,Iconic structures
+Mumbai,Jogeshwari Caves,Iconic structures
+Mumbai,Madh Fort,Iconic structures
+Mumbai,Bandra Fort,Iconic structures
+Mumbai,Flora Fountain,Iconic structures
+Mumbai,Gateway Of India,Iconic structures
+Mumbai,Shivadi fort and Flamingo Point,Iconic structures
+Mumbai,Bandra Worli Sea Link Bridge,Iconic structures
+Mumbai,Marine Drive,Iconic structures
+Mumbai,Global Vipassana Pagoda,Spiritual sites
+Mumbai,ISKCON Mandir - Juhu,Spiritual sites
+Mumbai,Gaondevi Temple & Gilbert Hill,Spiritual sites
+Mumbai,Basilica of Our Lady of the Mount,Spiritual sites
+Mumbai,Shree Siddhivinayak Temple,Spiritual sites
+Mumbai,BAPS Shri Swaminarayan Mandir,Spiritual sites
+Mumbai,Haji Ali Dargah,Spiritual sites
+Mumbai,Shri Mahalakshmi Temple,Spiritual sites
+Mumbai,Shree Babulnath Mandir,Spiritual sites
+Mumbai,ISKCON Chowpatty (Sri Sri Radha Gopinath Mandir),Spiritual sites
+Mumbai,Juma Masjid,Spiritual sites
+Mumbai,Shri Mumbadevi Temple,Spiritual sites
+Mumbai,St. Thomas' Cathedral,Spiritual sites
+Mumbai,Zoo (Veermata Jijabai Bhosale Botanical Udyan),Nature
+Mumbai,Gorai Beach,Nature
+Mumbai,Aksa Beach,Nature
+Mumbai,Versova Beach,Nature
+Mumbai,Juhu Beach,Nature
+Mumbai,Girgaon Chowpatty,Nature
+Mumbai,Powai Lake,Nature
+Mumbai,Chhota Kashmir Park.,Nature
+Mumbai,Vihar Lake,Nature
+Mumbai,Tulsi Lake,Nature
+Mumbai,Sanjay Gandhi National Park,Nature
+Mumbai,Bandstand Promenade,Nature
+Mumbai,Oval Maidan,Nature
+Mumbai,Hanging Gardens,Nature
+Mumbai,Alibaug Beach,Nature
+Mumbai,Karnala Bird Sanctuary,Nature
+Mumbai,Matheran Hill Station,Nature
+Mumbai,Lonavala and Khandala,Nature
+Mumbai,Film city Dadasaheb Phalke,Art and museum
+Mumbai,RBI Monetary Museum,Art and museum
+Mumbai,"The Asiatic Society, Mumbai",Art and museum
+Mumbai,Jehangir Art Gallery,Art and museum
+Mumbai,Chhatrapati Shivaji Maharaj Vastu Sangrahalaya,Art and museum
+Mumbai,"Nehru planetarium, Mumbai",Art and museum
+Mumbai,Nehru Science Centre,Art and museum
+Mumbai,Mani Bhavan Gandhi Sangrahalaya,Art and museum
+Mumbai,Essel World,Amusement park
+Mumbai,Imagica,Amusement park
+Shimla,Shimla Airport (Jubbarhatti Airport),Transport
+Shimla,ISBT Shimla ( New Bus stand),Transport
+Shimla,Shimla Railway station,Transport
+Shimla,Old bus stand shimla,Transport
+Shimla,Ridge Mall road,Market
+Shimla,Lakkar bazar,Market
+Shimla,Tibetan Refugee Market,Market
+Shimla,Christ Church,Spiritual sites
+Shimla,"Shri Hanuman Temple, Jakhoo",Spiritual sites
+Shimla,Dorje Drak Monastery,Spiritual sites
+Shimla,St. Michael's Catholic Cathedral,Spiritual sites
+Shimla,Kali Bari Temple,Spiritual sites
+Shimla,Tara Devi Temple,Spiritual sites
+Shimla,Baba Bhalku Rail Museum,Art and museum
+Shimla,Gaiety Heritage Cultural Complex,Art and museum
+Shimla,Bantony Castle,Art and museum
+Shimla,Army Heritage Museum & Annadale Ground,Art and museum
+Shimla,Himachal State Museum,Art and museum
+Shimla,Viceregal Lodge,Art and museum
+Shimla,Chadwick Falls,Nature
+Shimla,Himalayan Bird Park,Nature
+Shimla,Kufri Horse Ride,Nature
+Shimla,Himalayan Nature Park Kufri,Nature
+Shimla,"Apple garden Naldehra, RHRTS Mashobra",Nature
+Shimla,Carignano Nature Park,Nature
+Shimla,Cycling in Wildlife Sanctuary,Nature
+Shimla,Water Rafting in Tattapani,Activity
+Shimla,Ice Skating Ring,Activity
+Shimla,Naldehra Golf Course,Activity
+Shimla,Nagsons Amusement Park,Activity
+Shimla,Kufri Fun World,Activity
+Shimla,Adventure Resorts,Activity
+Ayodhya,"Airport, Maharishi Valmiki International Ayodhya Dham",Transport
+Ayodhya,Ayodhya Junction,Transport
+Ayodhya,Ayodhya Dham Bus Station,Transport
+Ayodhya,Ayodhya By Pass,Transport
+Ayodhya,Faizabad Bus Stand,Transport
+Ayodhya,AYODHYA CANTT,Transport
+Ayodhya,Shree Ram Janmabhoomi Mandir,Main Temples
+Ayodhya,Shri Hanuman Garhi Mandir,Main Temples
+Ayodhya,Dashrath Mahal,Main Temples
+Ayodhya,Kanak Bhawan,Main Temples
+Ayodhya,Ram Ki Paidi,Main Temples
+Ayodhya,Ram Katha Sangrahalay,Art and museum
+Ayodhya,Tulasi Smarak Bhavan,Art and museum
+Ayodhya,Shri Lakshman Kila,Other temples
+Ayodhya,Birla Shree Sita Ram Mandir,Other temples
+Ayodhya,Guptar Ghat,Other temples
+Manali,Manali Bus Stand (HRTC Bus Stand),Transport
+Manali,Private Volvo Bus Stand,Transport
+Manali,Shri Vashishtha Temple,Spiritual sites
+Manali,Hadimba Devi Temple,Spiritual sites
+Manali,Shri Anjani Mahadev Mandir,Spiritual sites
+Manali,"Manu Temple, Old Manali",Spiritual sites
+Manali,"Buddhist Monastery, Gadhan Thekchhokling Gompa",Spiritual sites
+Manali,Himalayan Nyinmapa Buddhist Monastery,Spiritual sites
+Manali,Mall Road Market,Market
+Manali,Rohtang La,Adventure & Recreation
+Manali,Solang Valley,Adventure & Recreation
+Manali,Hampta Pass Trek,Adventure & Recreation
+Manali,Jogini Falls,Water feature & Parks
+Manali,Nehru Kund,Water feature & Parks
+Manali,Bhrigu Lake,Water feature & Parks
+Manali,Manali wildlife sanctuary,Water feature & Parks
+Manali,Van Vihar National Park,Water feature & Parks
+Manali,Naggar Castle,Iconic structures
+Pune,Pune International Airport,Transport
+Pune,Pune Junction,Transport
+Pune,Swargate Bus Stand,Transport
+Pune,MSRTC ST Pune Station Bus Stand,Transport
+Pune,Hadapsar Railway Station,Transport
+Pune,Khadki Railway Station,Transport
+Pune,Vallabhnagar State Transport Bus Stand,Transport
+Pune,Chinchwad Railway Station Queens Town Side,Transport
+Pune,Chatrapati Shivaji Maharaj Nagar,Transport
+Pune,Sinhagad Fort,Fort and Iconic structures
+Pune,Rajgad Fort,Fort and Iconic structures
+Pune,Torna Fort,Fort and Iconic structures
+Pune,Purandar Fort,Fort and Iconic structures
+Pune,Tikona Fort,Fort and Iconic structures
+Pune,Lohgad Fort,Fort and Iconic structures
+Pune,Shaniwar Wada,Fort and Iconic structures
+Pune,Laal Mahal,Fort and Iconic structures
+Pune,Aga Khan Palace,Fort and Iconic structures
+Pune,Karla Caves,Fort and Iconic structures
+Pune,Raja Dinkar Kelkar Museum,Art and museum
+Pune,Blades of Glory Cricket Museum,Art and museum
+Pune,Pimpri Chinchwad Science Park,Art and museum
+Pune,Mahatma Phule Museum,Art and museum
+Pune,Dr Babasaheb Ambedkar Museum & Memorial,Art and museum
+Pune,Late Sanjay Mahadeo Nimhan Gram Sanskruti Udyan,Art and museum
+Pune,Shreemant Dagdusheth Halwai Ganpati Mandir,Spiritual sites
+Pune,Parvati Hill & Hill top Temples,Spiritual sites
+Pune,Shri Chatushrungi Devi Temple,Spiritual sites
+Pune,Shri Siddhivinayak Ganesh Mandir Sarasbaug,Spiritual sites
+Pune,Mahadji Shinde Chhatri,Spiritual sites
+Pune,ISKCON NVCC Pune,Spiritual sites
+Pune,"Shri Khandoba Mandir, Jejuri",Spiritual sites
+Pune,Bhuleshwar Temple,Spiritual sites
+Pune,BAPS Shri Swaminarayan Mandir Pune,Spiritual sites
+Pune,"Katraj Jain Temple, Aagam Mandir",Spiritual sites
+Pune,St. Patrick's Cathedral,Spiritual sites
+Pune,Prati Balaji Mandir,Spiritual sites
+Pune,Bhimashankar Jyotirlinga,Spiritual sites
+Pune,Shree Sant Dnyaneshwar Maharaj Samadhi Mandir,Spiritual sites
+Pune,"Shri Prati Shirdi Sai Baba Temple, Shirgaon Ramdara temple",Spiritual sites
+Pune,Shree Chintamani Vinayaka Temple Theur,Spiritual sites
+Pune,Pashan Lake,Nature
+Pune,Osho Garden,Nature
+Pune,Pune-Okayama Friendship Garden,Nature
+Pune,Rajiv Gandhi Zoological Park,Nature
+Pune,Empress Botanical Garden,Nature
+Pune,Khadakwasla Dam,Nature
+Pune,Taljai Hills,Nature
+Pune,Vetal Hill,Nature
+Pune,Mula Mutha River,Nature
+Pune,Lavasa,Nature
+Pune,Chhatrapati Sambhaji Maharaj garden,Nature
+Chandigarh,Chandigarh Airport (Shaheed Bhagat Singh International),Transport
+Chandigarh,Chandigarh Junction railway station,Transport
+Chandigarh,ISBT Sector-43,Transport
+Chandigarh,"Chandigarh Bus Terminus, Sector 17",Transport
+Chandigarh,Sukhna Lake Chandigarh,Nature
+Chandigarh,Zakir Hussain Rose Garden,Nature
+Chandigarh,Rock Garden,Nature
+Chandigarh,Japanese Garden,Nature
+Chandigarh,Garden of Fragrance,Nature
+Chandigarh,Chandigarh War Memorial park (Bougainvillea Park),Nature
+Chandigarh,Leisure Valley,Nature
+Chandigarh,Chandigarh Botanical Garden,Nature
+Chandigarh,Cactus Garden,Nature
+Chandigarh,Sukhna Wildlife Sanctuary,Nature
+Chandigarh,Ghaggar River,Nature
+Chandigarh,Mahendra Chaudhary Zoological Park,Nature
+Chandigarh,Terraced Garden,Nature
+Chandigarh,Butterfly Park,Nature
+Chandigarh,Shanti Kunj Park,Nature
+Chandigarh,Patiala Ki Rao Reserved Forest,Nature
+Chandigarh,Chandigarh Bird Park,Nature
+Chandigarh,"Yadavindra Gardens, Pinjore",Nature
+Chandigarh,Dhanas Lake,Nature
+Chandigarh,Shri Mata Mansa Devi Temple,Spiritual sites
+Chandigarh,ISKCON Temple Chandigarh,Spiritual sites
+Chandigarh,"Gurudwara 10th Paatshahi Sri Nada Sahilb, Panchkula",Spiritual sites
+Chandigarh,Gurdwara Shri Guru Teg Bahadur Sahib,Spiritual sites
+Chandigarh,"Gurdwara Singh Shaheedan, Sohana",Spiritual sites
+Chandigarh,Shirdi Sai Samaj Sai Temple,Spiritual sites
+Chandigarh,Christ The King Cathedral,Spiritual sites
+Chandigarh,"Jama Masjid, Chandigarh",Spiritual sites
+Chandigarh,Shri Digambar Jain Mandir,Spiritual sites
+Chandigarh,Fateh Burj - Baba Banda Singh Bahadur War Memorial,Museums and iconic institutions
+Chandigarh,Capitol Complex Tourist Center,Museums and iconic institutions
+Chandigarh,"Government Museum and Art Gallery, History Museum, Architecture Museum",Museums and iconic institutions
+Chandigarh,Indian Air Force Heritage Museum,Museums and iconic institutions
+Chandigarh,International Dolls Museum,Museums and iconic institutions
+Chandigarh,Le Corbusier Centre,Museums and iconic institutions
+Chandigarh,Sector 17 Plaza,Market and Malls
+Chandigarh,Nexus Elante Mall,Market and Malls
+Chandigarh,VR Punjab,Market and Malls
+Chandigarh,DLF City Centre Mall,Market and Malls
+Chandigarh,Paras Downtown Square Mall,Market and Malls
+Jaipur,Jaipur International Airport,Transport
+Jaipur,Sindhi Camp Bus Station,Transport
+Jaipur,Jaipur Junction,Transport
+Jaipur,Gandhi Nagar Railway Station,Transport
+Jaipur,Durgapura Railway Station,Transport
+Jaipur,(NSC) Narayan Singh Circle Bus Stand,Transport
+Jaipur,Hawa Mahal,Fort and Iconic structures
+Jaipur,Amber Palace,Fort and Iconic structures
+Jaipur,Jantar Mantar,Fort and Iconic structures
+Jaipur,The City Palace,Fort and Iconic structures
+Jaipur,Jaigarh Fort,Fort and Iconic structures
+Jaipur,Nahargarh Fort,Fort and Iconic structures
+Jaipur,Jal Mahal (Man Sagar Lake),Fort and Iconic structures
+Jaipur,Gaitor Ki Chhatriyan,Fort and Iconic structures
+Jaipur,Patrika Gate (Jawahar Circle),Fort and Iconic structures
+Jaipur,Bhangarh Fort,Fort and Iconic structures
+Jaipur,Panna Meena ka Kund,Fort and Iconic structures
+Jaipur,Chand Baori,Fort and Iconic structures
+Jaipur,Shakambari Jheel,Nature
+Jaipur,Jhalana Leopard Safari Park,Nature
+Jaipur,Central Park,Nature
+Jaipur,Amar Jawan Jyoti,Nature
+Jaipur,Kanak Vrindavan Park,Nature
+Jaipur,Sisodia Rani ka Bagh & Vidyadhar Bagh,Nature
+Jaipur,Nahargarh Biological Park,Nature
+Jaipur,Birla Mandir,Spiritual sites
+Jaipur,"Govind Dev Ji Temple, Thikana mandir",Spiritual sites
+Jaipur,Moti Dungri Ganesh Ji Temple,Spiritual sites
+Jaipur,Galta Ji Temple (Monkey Temple),Spiritual sites
+Jaipur,Shree Khole Ke Hanuman Ji Temple,Spiritual sites
+Jaipur,"Jain Temple Sanghi Ji, Sanganer.",Spiritual sites
+Jaipur,Shri Guru Singh Sabha Gurudwara,Spiritual sites
+Jaipur,Shri garh ganesh ji temple,Spiritual sites
+Jaipur,"ISKCON Temple, Jaipur",Spiritual sites
+Jaipur,Shri Jagat Shiromani ji Temple,Spiritual sites
+Jaipur,Chulgiri Jain Thirth,Spiritual sites
+Jaipur,Mehandipur Balaji,Spiritual sites
+Jaipur,Albert Hall Museum,Art and museum
+Jaipur,Pratap Celebrity Wax Museum Jaipur,Art and museum
+Jaipur,Anokhi Museum,Art and museum
+Jaipur,Jawahar Kala Kendra,Art and museum
+Agra ,Agra Airport (Pandit Deen Dayal Upadhyay Airport),Transport
+Agra ,Agra Fort Railway Station,Transport
+Agra ,Agra Cantt Railway Station,Transport
+Agra ,Idgah Bus Stand,Transport
+Agra ,Isbt Government Bus stand,Transport
+Agra ,Taj Mahal,Iconic structures & centers
+Agra ,Agra Fort,Iconic structures & centers
+Agra ,Fatehpur Sikri Fort,Iconic structures & centers
+Agra ,Itmad-ud-Daula,Iconic structures & centers
+Agra ,Tomb of Akbar,Iconic structures & centers
+Agra ,Kalakriti culture and convention centre,Iconic structures & centers
+Agra ,Chini Ka Rauza,Iconic structures & centers
+Agra ,Tomb of Mariam-UZ-Zamani,Iconic structures & centers
+Agra ,Mehtab Bagh,Nature
+Agra ,Aram Bagh,Nature
+Agra ,Paliwal Park,Nature
+Agra ,Elephant Conservation and Care Center,Nature
+Agra ,Keetham Lake (Sur Sarovar),Nature
+Agra ,Taj Nature Walk,Nature
+Agra ,"Shri Mankameshwar Temple, Agra",Spiritual sites
+Agra ,Jama Masjid Agra,Spiritual sites
+Agra ,Gurudwara Guru Ka Taal,Spiritual sites
+Agra ,Samadh Soamiji Maharaj - Soami Bagh,Spiritual sites
+Varanasi,Varanasi Airport (Lal Bahadur Shastri International),Transport
+Varanasi,Varanasi Cantt Bus Stand,Transport
+Varanasi,Varanasi Junction railway station (BSB),Transport
+Varanasi,Varanasi City Railway Station (BCY),Transport
+Varanasi,Deen Dayal Railway Station,Transport
+Varanasi,Manduadih Banaras Railway Station (BSBS),Transport
+Varanasi,Lakhaniya Hills & Waterfall,Nature
+Varanasi,Rajdari and Devdari Waterfalls,Nature
+Varanasi,Shri Kashi Vishwanath Temple,Spiritual sites
+Varanasi,Dashashwamedh Ghat,Spiritual sites
+Varanasi,Manikarnika Mahashamshan Ghat,Spiritual sites
+Varanasi,Assi Ghat,Spiritual sites
+Varanasi,Shri Satyanarayan Tulsi Manas Mandir,Spiritual sites
+Varanasi,ISKCON Temple Varanasi,Spiritual sites
+Varanasi,Kaal Bhairav Temple,Spiritual sites
+Varanasi,Swarved Mahamandir Dham,Spiritual sites
+Varanasi,Namo Ghat,Spiritual sites
+Varanasi,Alamgir Masjid,Spiritual sites
+Varanasi,Pujari Maa Vindhyavasini Temple,Spiritual sites
+Varanasi,"Shri Kashi Vishwanath Temple, BHU Campus",Spiritual sites
+Varanasi,Sankat Mochan Hanuman Mandir,Spiritual sites
+Varanasi,Sant Kabir Math Lahartara,Spiritual sites
+Varanasi,Ramnagar Fort,Fort and Iconic structures
+Varanasi,Archaeological Buddhist Remains of Sarnath,Fort and Iconic structures
+Varanasi,Chunar Fort,Fort and Iconic structures
+Varanasi,Chet Singh Ghat,Fort and Iconic structures
+Varanasi,Jantar Mantar & Man Singh Observatory,Museums and Iconic institutions
+Varanasi,Bharat Kala Bhavan Museum,Museums and Iconic institutions
+Varanasi,RUDRAKSH - International Convention Centre,Museums and Iconic institutions
+Rishikesh,Rishikesh bus station,Transport
+Rishikesh,Jolly Grant Airport - Dehradun,Transport
+Rishikesh,Railway station rishikesh,Transport
+Rishikesh,Ram jhula,Iconic Bridges
+Rishikesh,Lakshman Jhula,Iconic Bridges
+Rishikesh,Janki Jhula,Iconic Bridges
+Rishikesh,Ganga Beach,Nature
+Rishikesh,Goa Beach Rishikesh,Nature
+Rishikesh,Neer Waterfall,Nature
+Rishikesh,The Secret Waterfall,Nature
+Rishikesh,Patna Garud Chatti Waterfall,Nature
+Rishikesh,Shivpuri (River Rafting),Nature
+Rishikesh,Rajaji National Park,Nature
+Rishikesh,Marine Drive (Aastha Path),Nature
+Rishikesh,The Beatles Ashram,Spiritual sites
+Rishikesh,(Tera Manzil Temple) Trayambakeshwar Temple,Spiritual sites
+Rishikesh,Parmarth Niketan Ashram,Spiritual sites
+Rishikesh,Shatrughana Temple Ghat aarti,Spiritual sites
+Rishikesh,Triveni Ghat Rishikesh,Spiritual sites
+Rishikesh,Gurdwara Sri Hemkunt Sahib,Spiritual sites
+Rishikesh,Kunjapuri Mata Ancient Temple & Sunrise Trek,Spiritual sites
+Rishikesh,Vashishtha Gufa Temple,Spiritual sites
+Rishikesh,Shree Neelkanth Mahadev Temple,Spiritual sites
+Srinagar,TRC Bus Stand Srinagar,Transport
+Srinagar,Srinagar railway station,Transport
+Srinagar,(Srinagar Airport) Sheikh ul-Alam International Airport,Transport
+Srinagar,Parimpora Bus Stand,Transport
+Srinagar,Dal Lake,Water body
+Srinagar,Nigeen Lake,Water body
+Srinagar,Anchar Lake,Water body
+Srinagar,Jhelum River,Water body
+Srinagar,Shalimar Bagh Mughal Garden,Nature
+Srinagar,Tulip Garden Indira Gandhi Memorial,Nature
+Srinagar,Dachigam National Park,Nature
+Srinagar,Nishat Garden,Nature
+Srinagar,Cheshma Shahi Garden,Nature
+Srinagar,Botanical Garden Jawaharlal Nehru Memorial,Nature
+Srinagar,Badam Wari Park,Nature
+Srinagar,Gulmarg Gondola,Nature
+Srinagar,Char Chinar in Dal lake,Nature
+Srinagar,Hokersar Wetland,Nature
+Srinagar,Harwan Garden,Nature
+Srinagar,Doodhpathri (Meadow valley),Nature
+Srinagar,Pari Mahal,Fort & Palace
+Srinagar,Hari Parbat Fort,Fort & Palace
+Srinagar,Sri Shankaracharya Temple,Spiritual sites
+Srinagar,Gurudwara Chati Patshahi,Spiritual sites
+Srinagar,Sri Kheer Bhawani Durga Temple,Spiritual sites
+Srinagar,Dargah Hazratbal Shrine,Spiritual sites
+Srinagar,Jamia Masjid Srinagar,Spiritual sites
+Srinagar,Pather Masjid,Spiritual sites
+Srinagar,Lal Chowk,Market
+Srinagar,Polo view market,Market
+Srinagar,Kashmir Government Arts Emporium,Market
+Udaipur,"Maharana Pratap Airport, Udaipur",Transport
+Udaipur,Udaipur City Railway Station,Transport
+Udaipur,Ranapratapnagar railway station,Transport
+Udaipur,Udaipole Bus Stand,Transport
+Udaipur,Chetak Bus Stand,Transport
+Udaipur,City Palace,Fort and Iconic structures
+Udaipur,Jagmandir Island Palace,Fort and Iconic structures
+Udaipur,"Taj Lake Palace, Udaipur",Fort and Iconic structures
+Udaipur,Bagore Ki Haveli,Fort and Iconic structures
+Udaipur,Sajjangarh Monsoon Palace,Fort and Iconic structures
+Udaipur,Ahar Royal Cenotaphs,Fort and Iconic structures
+Udaipur,Jagdish Temple,Spiritual sites
+Udaipur,Eklingji Temple,Spiritual sites
+Udaipur,"Karni Mata Temple, Udaipur",Spiritual sites
+Udaipur,Neemach Mata Mandir,Spiritual sites
+Udaipur,Bohra Ganeshji Temple,Spiritual sites
+Udaipur,Shilpgram,Art and museum
+Udaipur,Vintage Car Museum,Art and museum
+Udaipur,Ahar Museum,Art and museum
+Udaipur,Haldighati Maharana Pratap Museum,Art and museum
+Udaipur,Pratap Gaurav Kendra Udaipur,Art and museum
+Udaipur,Saheliyon ki bari,Nature
+Udaipur,Lake Pichola,Nature
+Udaipur,Fateh Sagar Lake,Nature
+Udaipur,Badi Lake,Nature
+Udaipur,Gulab Bagh,Nature
+Udaipur,Rajiv Gandhi Garden,Nature
+Udaipur,Sajjan Garh Biological Park,Nature
+Nainital,"Nainital Bus Stand, Tallital",Transport
+Nainital,Kathgodam Railway Station,Transport
+Nainital,Nainital Lake,Top attractions
+Nainital,Snow View point,Top attractions
+Nainital,G B Pant High Altitude Zoo,Top attractions
+Nainital,Eco Cave Park,Top attractions
+Nainital,Tiffin Top,Top attractions
+Nainital,Naina Peak East,Top attractions
+Nainital,Himalayan Botanical Garden,Top attractions
+Nainital,Himalaya Darshan viewpoint,Top attractions
+Nainital,Mall Road,Top attractions
+Nainital,Raj Bhawan Governor House,Top attractions
+Nainital,Jim Corbett Gurney House,Top attractions
+Nainital,Woodland water fall nainital,Top attractions
+Nainital,"Sankat Mochan Mandir, Hanuman Garhi",Spiritual sites
+Nainital,"Shree Maa Naina Devi Temple, Nainital",Spiritual sites
+Nainital,Kainchi Dham - Shri Neeb Karori Baba Ashram,Spiritual sites
+Nainital,St John in the Wilderness Church,Spiritual sites
+Nainital,"Golu Devta Temple (Bell Temple), Ghorakhal",Spiritual sites
+Nainital,Sattal Lake,Other Lakes
+Nainital,Bhim Taal Lake,Other Lakes
+Nainital,Naukuchia Taal,Other Lakes
+Nainital,Sariyatal,Other Lakes
+Nainital,Khurpatal Lake,Other Lakes
+Mussoorie,Picture palace bus station,Transport
+Mussoorie,Library Bus stand,Transport
+Mussoorie,Dehradun Railway Station,Transport
+Mussoorie,Kempty Fall Taxi Stand,Transport
+Mussoorie,Kempty Falls,Top attractions
+Mussoorie,Lal Tibba Scenic Point,Top attractions
+Mussoorie,Gun Hill,Top attractions
+Mussoorie,Mall road,Top attractions
+Mussoorie,Company Garden,Top attractions
+Mussoorie,Mussorie Lake,Top attractions
+Mussoorie,Jharipani Waterfall,Top attractions
+Mussoorie,Cloud's End,Top attractions
+Mussoorie,George Everest House,Top attractions
+Mussoorie,Happy Valley Tibetan Buddhist Temple,Top attractions
+Mussoorie,Bhatta falls,Top attractions
+Jodhpur,Jodhpur Airport,Transport
+Jodhpur,Jodhpur Railway Station,Transport
+Jodhpur,Bhagat Ki Kothi Railway Station,Transport
+Jodhpur,Jodhpur Bus Stand (Raika Bagh),Transport
+Jodhpur,Mehrangarh Fort,Forts and Museums
+Jodhpur,Umaid Bhawan Palace,Forts and Museums
+Jodhpur,Jaswant Thada,Forts and Museums
+Jodhpur,Ghanta Ghar Jodhpur,Forts and Museums
+Jodhpur,Toorji Ka Jhalra Bavdi,Forts and Museums
+Jodhpur,Sardar Government Museum,Forts and Museums
+Jodhpur,Osiyan sacchiyay Mata Temple,Spiritual sites
+Jodhpur,Mahamandir Temple,Spiritual sites
+Jodhpur,Ganesh Temple Ratanada,Spiritual sites
+Jodhpur,Kayalana Lake,Nature
+Jodhpur,Masuria Hill Garden,Nature
+Jodhpur,Mandore Garden,Nature
+Jaisalmer,Jaisalmer Airport,Transport
+Jaisalmer,Railway station Jaisalmer,Transport
+Jaisalmer,RSRTC Bus stand,Transport
+Jaisalmer,Private bus stand,Transport
+Jaisalmer,Jaisalmer Fort,Fort and Iconic structures
+Jaisalmer,Kothari's Patwon Ki Haveli / Patwa Haveli,Fort and Iconic structures
+Jaisalmer,Nathmal Ki Haveli,Fort and Iconic structures
+Jaisalmer,Salam Singh Ki Haweli (Moti Mahal),Fort and Iconic structures
+Jaisalmer,Bada Bagh,Fort and Iconic structures
+Jaisalmer,Vyas Chhatri,Fort and Iconic structures
+Jaisalmer,Kuldhara Heritage Village,Fort and Iconic structures
+Jaisalmer,Khaba fort,Fort and Iconic structures
+Jaisalmer,Thar desert sand dunes & camps,Nature
+Jaisalmer,Gadisar Lake,Nature
+Jaisalmer,Shri Tanot Mata Temple,Spiritual sites
+Jaisalmer,Lodurva Parshwanatha Jain Temple,Spiritual sites
+Jaisalmer,Thar Heritage Museum,Art and museum
+Jaisalmer,Government Museum Jaisalmer,Art and museum
+Jaisalmer,Longewala War Memorial,Art and museum
+Jaisalmer,Heritage Mandir Palace,Art and museum
+Jaisalmer,Desert Cultural Centre (puppet show),Art and museum
+Jaisalmer,Jaisalmer War Museum,Art and museum
+Amritsar,"Airport, Sri Guru Ram Dass Jee International",Transport
+Amritsar,Amritsar Junction,Transport
+Amritsar,Amritsar Bus Stand,Transport
+Amritsar,Golden Temple (Sri Harmandir Sahib),Spiritual sites
+Amritsar,Shri Durgiana Temple,Spiritual sites
+Amritsar,Bhagwan Valmiki Ram Tirath Asthan,Spiritual sites
+Amritsar,Mata Lal Devi Mandir,Spiritual sites
+Amritsar,Gurudwara Chheharta Sahib,Spiritual sites
+Amritsar,Gurudwara Bir Baba Budha Sahib Ji,Spiritual sites
+Amritsar,Attari - Wagah Border,Iconic structures
+Amritsar,Jallianwala Bagh,Iconic structures
+Amritsar,Gobindgarh Fort,Iconic structures
+Amritsar,Pul Kanjri,Iconic structures
+Amritsar,Sadda Pind living museum,Art and museum
+Amritsar,Maharaja Ranjit Singh Museum in Ram Bagh,Art and museum
+Amritsar,The Partition Museum,Art and museum
+Amritsar,Harike Wetland and Bird Sanctuary,Nature
+Amritsar,Rose Garden,Nature
+Delhi,Waste to wonder,Nature and park
+Delhi,Jagannath mandir delhi,Spriritual sites
+Delhi,Vasudev Ghat Yamuna aarti,Spiritual sites
+Delhi,Sunder Nursery,Nature and park
+Goa,Butterfly Beach,Beaches & other water body
+Mathura Vrindavan,"Prem Mandir, Vrindavan",Temples
+Mathura Vrindavan,Sri Sri Krishna Balaram Mandir (ISKCON Vrindavan),Temples
+Mathura Vrindavan,Shri Krishna Janmasthan,Temples
+Mathura Vrindavan,"Shri Dwarkadhish Temple, Mathura",Temples
+Mathura Vrindavan,Birla Gita Temple,Temples
+Mathura Vrindavan,"Shri Banke Bihari Temple, Vrindavan",Temples
+Mathura Vrindavan,"Shri Radha Raman Temple, Vrindavan",Temples
+Mathura Vrindavan,"Shri Radha Rani Temple, Barsana",Temples
+Mathura Vrindavan,Rangnath Mandir (Shri Rangji Mandir),Temples
+Mathura Vrindavan,Vrindavan Chandrodaya Mandir,Temples
+Mathura Vrindavan,"Shri Pagal Baba Temple, Vrindavan",Temples
+Mathura Vrindavan,"Maa Vaishno Devi Dham, Vrindavan",Temples
+Mathura Vrindavan,Gokul Dham,Temples
+Mathura Vrindavan,"Shri Nand Baba Temple, Nandgaon",Temples
+Mathura Vrindavan,Shri Shani Mandir Kokilavan,Temples
+Mathura Vrindavan,Mathura Chaurasi Digamber Jain Temple,Temples
+Mathura Vrindavan,Shri Raman Bihariji Mandir,Temples
+Mathura Vrindavan,"Government Museum, Mathura",Fort & Museum
+Mathura Vrindavan,"Kans Quila, Mathura",Fort & Museum
+Mathura Vrindavan,Yamuna river,Sacred Landscapes
+Mathura Vrindavan,Vishram Ghat,Sacred Landscapes
+Mathura Vrindavan,Keshi Ghat,Sacred Landscapes
+Mathura Vrindavan,Nidhivan,Sacred Landscapes
+Mathura Vrindavan,Seva Kunj,Sacred Landscapes
+Mathura Vrindavan,Govardhan hill,Sacred Landscapes
+Mathura Vrindavan,"Potra Kund, Mathura",Sacred Landscapes
+Mathura Vrindavan,Radha Kund & Shyam Kund,Sacred Landscapes
+Mathura Vrindavan,"Kusum Sarovar, Govardhan",Sacred Landscapes
+Mathura Vrindavan,Mathura Junction,Transport
+Mathura Vrindavan,Mathura Cantt,Transport
+Mathura Vrindavan,New Bus Stand,Transport
+Mathura Vrindavan,"Bus Stand, Govardhan",Transport
+Mathura Vrindavan,Vrindavan Bus Stand,Transport
