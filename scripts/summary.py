@@ -28,13 +28,18 @@ except FileNotFoundError as e:
     print(f"Error: {e}")
     exit(1)
 
-# Group reviews by place_name
-grouped_reviews = reviews_df.groupby('place_name')['review_text'].apply(lambda x: ' '.join(x)).reset_index()
+# Group reviews by place_name but limit review text length
+def chunk_reviews(reviews, max_chars=8000):
+    """Split reviews into smaller chunks to avoid memory issues"""
+    reviews = reviews[:max_chars] if len(reviews) > max_chars else reviews
+    return reviews
+
+grouped_reviews = reviews_df.groupby('place_name')['review_text'].apply(lambda x: chunk_reviews(' '.join(x))).reset_index()
 
 # Step 3: Initialize the Ollama LLM
 llm = OllamaLLM(model="llama2", base_url="http://localhost:11434")
 
-# Step 4: Create the summary prompt and chain
+# Step 4: Create the summary prompt and chain with error handling
 summary_prompt_template = PromptTemplate(
     input_variables=["reviews"],
     template="Summarize the following reviews in 2-3 sentences, focusing on the overall sentiment, common themes, and key points such as mentions of busy times, visiting hours, wait times, or service speed. If reviews are too short or contradictory, note the lack of clear consensus:\n\n{reviews}"
@@ -42,30 +47,27 @@ summary_prompt_template = PromptTemplate(
 
 summary_chain = summary_prompt_template | llm
 
-# Process reviews and generate summaries
+# Step 5: Process reviews with error handling
 summaries = []
-for index, row in grouped_reviews.iterrows():
-    place_name = row['place_name']
-    reviews_text = row['review_text']
-    
+for _, row in grouped_reviews.iterrows():
     try:
-        summary = summary_chain.invoke({"reviews": reviews_text})
+        summary = summary_chain.invoke({"reviews": row['review_text']})
         summaries.append({
-            "place_name": place_name,
-            "summary": summary
+            'place_name': row['place_name'],
+            'summary': summary
         })
-        print(f"Summary for {place_name}:\n{summary}\n")
     except Exception as e:
-        print(f"Error summarizing reviews for {place_name}: {type(e).__name__} - {str(e)}")
+        print(f"Error summarizing reviews for {row['place_name']}: {str(e)}")
+        # Add a placeholder for failed summaries
         summaries.append({
-            "place_name": place_name,
-            "summary": "Error summarizing reviews."
+            'place_name': row['place_name'],
+            'summary': f"Error generating summary: {str(e)}"
         })
 
-# Save summaries to a CSV file
+# Convert summaries to DataFrame and save
 summaries_df = pd.DataFrame(summaries)
-summaries_df.to_csv("../data/summary.csv", index=False)
-print("Summaries saved to ../data/summary.csv")
+summaries_df.to_csv("../data/review_summaries.csv", index=False)
+print(f"✅ Generated summaries for {len(summaries)} places")
 
 # Step 5: Create a FAISS-based database from summaries
 combined_summaries = "\n\n".join(

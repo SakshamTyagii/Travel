@@ -312,6 +312,11 @@ def save_progress(all_reviews, all_places_data, output_dir):
     places_df.to_csv(places_file, index=False, encoding='utf-8')
     print(f"  💾 Saved metadata for {len(all_places_data)} places to {places_file}")
 
+def chunk_reviews(reviews, max_chars=4000):  # Reduced from 8000 to 4000
+    """Split reviews into smaller chunks to avoid memory issues"""
+    reviews = reviews[:max_chars] if len(reviews) > max_chars else reviews
+    return reviews
+
 def scrape_reviews(urls_data, output_dir="../data", min_reviews=150, max_reviews=500, star_filter=True):
     """
     Scrape Google Maps reviews from provided review section URLs and save to single CSV files
@@ -495,18 +500,13 @@ if __name__ == "__main__":
         exit()
     
     # Get user input
-    proceed = input("Ready to start scraping? This may take a while. (y/n): ").lower()
-    if proceed != 'y':
-        print("🛑 Scraping cancelled.")
-        exit()
+    start_from = input("Start scraping from which location number? (default: 0): ").strip()
+    start_from = int(start_from) if start_from.isdigit() else 0
     
-    num_places = input("How many places to scrape? (Enter a number or 'all'): ").lower()
-    if num_places != 'all':
-        try:
-            num_places = int(num_places)
-            urls_data = urls_data[:num_places]
-        except ValueError:
-            print("⚠️ Invalid input. Scraping all places.")
+    # Slice the URLs data to start from specified location
+    if start_from > 0:
+        urls_data = urls_data[start_from:]
+        print(f"➡️ Starting from location #{start_from}")
     
     min_reviews = input("Minimum reviews per place (default 150): ")
     min_reviews = int(min_reviews) if min_reviews.strip().isdigit() else 150
