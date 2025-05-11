@@ -13,6 +13,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Update file paths to use correct directory structure and OS-agnostic paths
+# For GCP deployment, we need to ensure data files are in the same directory as the app
 data_dir = os.path.join(os.path.dirname(__file__), "data")
 appsheet_csv = os.path.join(data_dir, "appsheet.csv")
 embeddings_file = os.path.join(data_dir, "embeddings.pkl")
@@ -133,7 +134,7 @@ else:
 
 @app.route('/')
 def serve_index():
-    return send_file("index.html")
+    return send_file(os.path.join(os.path.dirname(__file__), "index.html"))
 
 @app.route('/get_locations', methods=['GET'])
 def get_locations():
