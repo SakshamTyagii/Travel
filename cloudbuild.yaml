@@ -1,0 +1,38 @@
+steps:
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/delhi-travel-assistant:$COMMIT_SHA', '.']
+
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/delhi-travel-assistant:$COMMIT_SHA']
+
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+  - 'run'
+  - 'deploy'
+  - 'delhi-travel-assistant'
+  - '--image'
+  - 'gcr.io/$PROJECT_ID/delhi-travel-assistant:$COMMIT_SHA'
+  - '--region'
+  - 'asia-south1'  # Using Asia South 1 region to match your existing deployment
+  - '--platform'
+  - 'managed'
+  - '--allow-unauthenticated'
+  - '--memory'
+  - '2Gi'  # Increased memory for ChromaDB and embeddings
+  - '--set-env-vars'
+  - 'GEMINI_API_KEY=${_GEMINI_API_KEY},GCS_BUCKET_NAME=${_GCS_BUCKET_NAME}'
+
+# Store images
+images:
+- 'gcr.io/$PROJECT_ID/delhi-travel-assistant:$COMMIT_SHA'
+
+# Define substitution variables for secrets
+substitutions:
+  _GEMINI_API_KEY: "AIzaSyDg7QgSMxsUbYAX7vABCPvUN03NUocYpcY"  # Your API key from .env
+  _GCS_BUCKET_NAME: "riitii-app-chroma-db"  # Your bucket name from .env
+
+timeout: '1800s'  # 30 minutes

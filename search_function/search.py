@@ -14,9 +14,27 @@ CORS(app)
 
 # Update file paths to use correct directory structure and OS-agnostic paths
 # For GCP deployment, we need to ensure data files are in the same directory as the app
-data_dir = os.path.join(os.path.dirname(__file__), "data")
+is_cloud_run = os.environ.get('K_SERVICE') is not None
+if is_cloud_run:
+    # In Cloud Run, we'll use the absolute path to the directory
+    data_dir = os.path.join(os.path.dirname(__file__), "data")
+    if not os.path.exists(data_dir):
+        # If data directory doesn't exist in the expected location, 
+        # try to find it in the parent directory
+        parent_data_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
+        if os.path.exists(parent_data_dir):
+            data_dir = parent_data_dir
+else:
+    # Local development
+    data_dir = os.path.join(os.path.dirname(__file__), "data")
+
 appsheet_csv = os.path.join(data_dir, "appsheet.csv")
 embeddings_file = os.path.join(data_dir, "embeddings.pkl")
+
+# Print paths for debugging
+print(f"Data directory: {data_dir}")
+print(f"Appsheet CSV: {appsheet_csv}")
+print(f"Embeddings file: {embeddings_file}")
 
 # Load the appsheet.csv file
 appsheet_df = pd.read_csv(appsheet_csv)
