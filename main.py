@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from flask import Flask
 from search_function.search import app as search_app
 from ragpipeline.rag_pipeline import rag_pipeline
