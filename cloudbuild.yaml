@@ -35,4 +35,8 @@ substitutions:
   _GEMINI_API_KEY: "AIzaSyDg7QgSMxsUbYAX7vABCPvUN03NUocYpcY"  # Your API key from .env
   _GCS_BUCKET_NAME: "riitii-app-chroma-db"  # Your bucket name from .env
 
+# Add options for logging to resolve service account error
+options:
+  logging: CLOUD_LOGGING_ONLY
+
 timeout: '1800s'  # 30 minutes
