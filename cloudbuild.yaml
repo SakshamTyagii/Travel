@@ -37,6 +37,8 @@ substitutions:
 
 # Add options for logging to resolve service account error
 options:
-  logging: CLOUD_LOGGING_ONLY
+  logging: GCS_ONLY
+  logStreamingOption: STREAM_ON
+  logsBucket: "gs://riitii-app-chroma-db"
 
 timeout: '1800s'  # 30 minutes
