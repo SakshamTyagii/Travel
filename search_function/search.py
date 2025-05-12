@@ -253,5 +253,9 @@ def suggest():
     # Remove duplicates by display value (already handled by item_scores)
     return jsonify(matches)
 
+@app.route('/', methods=['GET'])
+def index():
+    return "Search API is running!", 200
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
