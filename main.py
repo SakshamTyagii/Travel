@@ -22,5 +22,9 @@ def rag_query():
     answer = rag_pipeline(query)
     return jsonify({'answer': answer})
 
+@main_app.route('/rag/query', methods=['GET'])
+def rag_query_get():
+    return "RAG API is running! Use POST to query.", 200
+
 if __name__ == "__main__":
     main_app.run(host="0.0.0.0", port=8080)
