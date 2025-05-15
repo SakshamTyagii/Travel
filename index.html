@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Travel Assistant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1:after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #4c9eaf, #65c6bd);
+            border-radius: 3px;
+        }
+        
+        .tagline {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-top: 20px;
+        }
+        
+        .features-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 40px;
+            gap: 25px;
+        }
+        
+        .feature-box {
+            flex: 1 1 calc(50% - 25px);
+            min-width: 280px;
+            border: 1px solid #e1e8ed;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+        
+        .feature-box h2 {
+            margin-top: 0;
+            color: #4c9eaf;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .feature-box p {
+            color: #5d6778;
+            margin-bottom: 25px;
+        }
+        
+        .feature-icon {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 24px;
+            color: rgba(76, 158, 175, 0.2);
+        }
+        
+        a.button {
+            display: inline-block;
+            background: linear-gradient(90deg, #4c9eaf, #65c6bd);
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 50px;
+            margin-top: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(76, 158, 175, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        a.button:hover {
+            background: linear-gradient(90deg, #65c6bd, #4c9eaf);
+            box-shadow: 0 6px 15px rgba(76, 158, 175, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9em;
+            border-top: 1px solid #e1e8ed;
+        }
+        
+        /* Add responsive design */
+        @media (max-width: 768px) {
+            .features-container {
+                flex-direction: column;
+            }
+            
+            .feature-box {
+                flex: 1 1 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Travel Assistant</h1>
+        <div class="tagline">Your AI-powered guide for seamless travel experiences</div>
+    </div>
+    
+    <div class="features-container">
+        <div class="feature-box">
+            <div class="feature-icon"><i class="fas fa-search"></i></div>
+            <h2>Search Nearby Attractions</h2>
+            <p>Discover attractions, hotels, restaurants, and transportation options near you. Get detailed information about locations with smart search suggestions.</p>
+            <a href="/search" class="button">Explore Places <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></a>
+        </div>
+        
+        <div class="feature-box">
+            <div class="feature-icon"><i class="fas fa-comments"></i></div>
+            <h2>Ask Travel Questions</h2>
+            <p>Get AI-powered answers to your questions about places you're visiting, based on real visitor reviews and local knowledge.</p>
+            <a href="/rag/test" class="button">Ask a Question <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></a>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>&copy; 2025 Travel Assistant | Your personal guide to exploring new places</p>
+    </div>
+</body>
+</html>

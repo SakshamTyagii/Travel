@@ -23,7 +23,9 @@ except Exception as e:
 llm = OllamaLLM(model="llama2", base_url="http://localhost:11434")
 
 # Step 3: Load ChromaDB vector database
-client = chromadb.PersistentClient(path="../data/chroma_db")
+import os
+chroma_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "chroma_db")
+client = chromadb.PersistentClient(path=chroma_path)
 embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="all-MiniLM-L6-v2")
 try:
     collection = client.get_collection(
@@ -60,8 +62,23 @@ def extract_place_name(query):
 
 def rag_pipeline(query):
     """Implement the RAG pipeline: Understand intent, retrieve summaries, generate answer"""
-    # Step 4.1: Understand query intent and extract place name
+    # Fast path for simple queries
+    simple_queries = {
+        "hi": "Hello! I'm your travel assistant. How can I help you today?",
+        "hello": "Hello! I'm your travel assistant. How can I help you today?",
+        "hey": "Hi there! I'm here to answer your questions about attractions.",
+        "thanks": "You're welcome! Feel free to ask if you have more questions.",
+        "thank you": "You're welcome! I'm happy to help with your travel questions."
+    }
+    
+    # Check for simple queries first for instant response
+    query_lower = query.lower().strip()
+    if query_lower in simple_queries:
+        return simple_queries[query_lower]
+    
+    # For non-simple queries, proceed with your existing pipeline...
     try:
+        # Step 4.1: Understand query intent and extract place name
         intent_response = llm.invoke(intent_prompt.format(query=query))
         # Parse intent and place name from the response
         intent_lines = intent_response.split("\n")
@@ -120,23 +137,17 @@ def rag_pipeline(query):
         ))
         return answer
     except Exception as e:
-        return "Sorry, I couldn't generate an answer due to an error."
+        return f"Sorry, I couldn't generate an answer due to an error: {str(e)}"
 
-# Step 5: Interactive query loop
-print("\nWelcome to the Google Maps Review Assistant!")
-print("You can ask questions about the places based on their review summaries.")
-print("Type 'exit' to quit.\n")
+# Modify the code to only run when directly executed
+if __name__ == "__main__":
+    print("Welcome to the Google Maps Review Assistant!")
+    print("You can ask questions about the places based on their review summaries.")
+    print("Type 'exit' to quit.")
 
-while True:
-    query = input("Your question: ").strip()
-    if not query:
-        print("Please enter a valid question.")
-        continue
-    if query.lower() == "exit":
-        break
-    
-    print(f"\nProcessing query: {query}")
-    answer = rag_pipeline(query)
-    print(f"Answer: {answer}\n")
-
-print("Thank you for using the Google Maps Review Assistant!")
+    while True:
+        user_input = input("Your question: ")
+        if user_input.lower() == 'exit':
+            break
+        answer = rag_pipeline(user_input)
+        print(f"Answer: {answer}\n")

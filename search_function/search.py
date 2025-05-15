@@ -1,6 +1,8 @@
 import pandas as pd
 import os
 import pickle
+import sys
+import traceback
 from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
 from sentence_transformers import SentenceTransformer, util
@@ -8,9 +10,19 @@ import torch
 from fuzzywuzzy import fuzz
 from pytrie import StringTrie
 
-app = Flask(__name__)
-# Enable CORS for all routes
-CORS(app)
+from flask import Blueprint
+
+# Create a Blueprint instead of a Flask app
+app = Blueprint('search', __name__)
+
+# Set up logging for the application
+import logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[logging.StreamHandler(sys.stdout)]
+)
+logger = logging.getLogger(__name__)
 
 # Update file paths to use correct directory structure and OS-agnostic paths
 # For GCP deployment, we need to ensure data files are in the same directory as the app
@@ -24,23 +36,60 @@ if is_cloud_run:
         parent_data_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
         if os.path.exists(parent_data_dir):
             data_dir = parent_data_dir
+    logger.info(f"Running in Cloud Run environment, data_dir={data_dir}")
 else:
     # Local development
     data_dir = os.path.join(os.path.dirname(__file__), "data")
+    logger.info(f"Running in local environment, data_dir={data_dir}")
 
 appsheet_csv = os.path.join(data_dir, "appsheet.csv")
 embeddings_file = os.path.join(data_dir, "embeddings.pkl")
 
 # Print paths for debugging
-print(f"Data directory: {data_dir}")
-print(f"Appsheet CSV: {appsheet_csv}")
-print(f"Embeddings file: {embeddings_file}")
+logger.info(f"Data directory: {data_dir}")
+logger.info(f"Appsheet CSV: {appsheet_csv}")
+logger.info(f"Embeddings file: {embeddings_file}")
 
-# Load the appsheet.csv file
-appsheet_df = pd.read_csv(appsheet_csv)
+try:
+    # Check if files exist
+    if not os.path.exists(appsheet_csv):
+        logger.error(f"Appsheet CSV file not found: {appsheet_csv}")
+        # List available files in the data directory for debugging
+        if os.path.exists(data_dir):
+            logger.info(f"Files in data directory: {os.listdir(data_dir)}")
+    
+    # Load the appsheet.csv file
+    appsheet_df = pd.read_csv(appsheet_csv)
+    logger.info(f"Successfully loaded appsheet.csv with {len(appsheet_df)} entries")
+except Exception as e:
+    logger.error(f"Error loading appsheet.csv: {str(e)}")
+    logger.error(traceback.format_exc())
+    # Create a fallback dataframe with example data
+    appsheet_df = pd.DataFrame({
+        "City": ["Delhi", "Delhi"],
+        "Location": ["Indira Gandhi International Airport", "Red Fort"],
+        "Layer": ["Airports", "Monuments"],
+        "synonyms": ["DEL, IGI, Delhi Airport", "Lal Qila"]
+    })
+    logger.warning(f"Created fallback dataframe with {len(appsheet_df)} entries")
 
-# Initialize the NLP model with all-mpnet-base-v2
-model = SentenceTransformer("all-mpnet-base-v2")
+try:
+    # Initialize the NLP model with all-mpnet-base-v2
+    model = SentenceTransformer("all-mpnet-base-v2")
+    logger.info("Successfully initialized SentenceTransformer model")
+except Exception as e:
+    logger.error(f"Error initializing SentenceTransformer: {str(e)}")
+    logger.error(traceback.format_exc())
+    # Create a fallback model - this is a stub and won't work properly
+    class FallbackModel:
+        def encode(self, sentences, convert_to_tensor=False, batch_size=16):
+            import numpy as np
+            # Return dummy embeddings for testing
+            if isinstance(sentences, str):
+                return torch.tensor(np.zeros(384))
+            return torch.tensor(np.zeros((len(sentences), 384)))
+    model = FallbackModel()
+    logger.warning("Created fallback model")
 
 # Airport codes mapping (simplified for demonstration; you can expand this)
 airport_codes = {
@@ -88,71 +137,97 @@ def generate_ngrams(text, n=3):
         return [text]
     return [text[i:i+n] for i in range(len(text) - n + 1)]
 
-# Build searchable items and terms
-for idx, row in appsheet_df.iterrows():
-    city = row["City"]
-    location = row["Location"]
-    layer = row["Layer"] if "Layer" in row and pd.notna(row["Layer"]) else ""
-    synonyms = row["synonyms"].split(", ") if pd.notna(row["synonyms"]) and row["synonyms"] else []
-    
-    # Add specific synonyms for airports
-    if location.lower() in airport_codes:
-        code = airport_codes[location.lower()]
-        if code.lower() not in [s.lower() for s in synonyms]:
-            synonyms.append(code)
-    
-    # Generate additional synonyms
-    additional_synonyms = generate_additional_synonyms(location, city, layer)
-    synonyms.extend(additional_synonyms)
-    
-    # Remove duplicates in synonyms
-    synonyms = list(set(s.lower() for s in synonyms if s))
-    
-    # Add the item to searchable_items (only once per location)
-    item_idx = len(searchable_items)
-    item = {
-        "display": f"{location} ({city})",
-        "value": location,
-        "city": city.lower(),
-        "layer": layer.lower(),
-        "synonyms": synonyms
-    }
-    searchable_items.append(item)
-    
-    # Add the location name to search terms
-    search_terms.append(location.lower())
-    term_to_item_idx.append(item_idx)
-    trie[location.lower()] = item_idx  # Add to trie
-    
-    # Add n-grams for the location name
-    for ngram in generate_ngrams(location):
-        if ngram not in ngram_dict:
-            ngram_dict[ngram] = set()
-        ngram_dict[ngram].add(item_idx)
-    
-    # Add each synonym to search terms
-    for synonym in synonyms:
-        search_terms.append(synonym.lower())
+try:
+    # Build searchable items and terms
+    for idx, row in appsheet_df.iterrows():
+        city = row["City"]
+        location = row["Location"]
+        layer = row["Layer"] if "Layer" in row and pd.notna(row["Layer"]) else ""
+        synonyms = row["synonyms"].split(", ") if pd.notna(row["synonyms"]) and row["synonyms"] else []
+        
+        # Add specific synonyms for airports
+        if location.lower() in airport_codes:
+            code = airport_codes[location.lower()]
+            if code.lower() not in [s.lower() for s in synonyms]:
+                synonyms.append(code)
+        
+        # Generate additional synonyms
+        additional_synonyms = generate_additional_synonyms(location, city, layer)
+        synonyms.extend(additional_synonyms)
+        
+        # Remove duplicates in synonyms
+        synonyms = list(set(s.lower() for s in synonyms if s))
+        
+        # Add the item to searchable_items (only once per location)
+        item_idx = len(searchable_items)
+        item = {
+            "display": f"{location} ({city})",
+            "value": location,
+            "city": city.lower(),
+            "layer": layer.lower(),
+            "synonyms": synonyms
+        }
+        searchable_items.append(item)
+        
+        # Add the location name to search terms
+        search_terms.append(location.lower())
         term_to_item_idx.append(item_idx)
-        trie[synonym.lower()] = item_idx  # Add to trie
-        # Add n-grams for synonyms
-        for ngram in generate_ngrams(synonym):
+        trie[location.lower()] = item_idx  # Add to trie
+        
+        # Add n-grams for the location name
+        for ngram in generate_ngrams(location):
             if ngram not in ngram_dict:
                 ngram_dict[ngram] = set()
             ngram_dict[ngram].add(item_idx)
+        
+        # Add each synonym to search terms
+        for synonym in synonyms:
+            search_terms.append(synonym.lower())
+            term_to_item_idx.append(item_idx)
+            trie[synonym.lower()] = item_idx  # Add to trie
+            # Add n-grams for synonyms
+            for ngram in generate_ngrams(synonym):
+                if ngram not in ngram_dict:
+                    ngram_dict[ngram] = set()
+                ngram_dict[ngram].add(item_idx)
+
+    logger.info(f"Built search index with {len(searchable_items)} items and {len(search_terms)} search terms")
+except Exception as e:
+    logger.error(f"Error building search index: {str(e)}")
+    logger.error(traceback.format_exc())
 
 # Precompute embeddings and save to file
-if os.path.exists(embeddings_file):
-    with open(embeddings_file, "rb") as f:
-        embeddings = pickle.load(f)
-else:
-    embeddings = model.encode(search_terms, convert_to_tensor=True, batch_size=16)
-    with open(embeddings_file, "wb") as f:
-        pickle.dump(embeddings, f)
+try:
+    if os.path.exists(embeddings_file):
+        with open(embeddings_file, "rb") as f:
+            embeddings = pickle.load(f)
+            logger.info(f"Loaded embeddings from file with shape {embeddings.shape}")
+    else:
+        logger.info(f"Embeddings file not found, generating new embeddings for {len(search_terms)} terms")
+        embeddings = model.encode(search_terms, convert_to_tensor=True, batch_size=16)
+        logger.info(f"Generated embeddings with shape {embeddings.shape}")
+        with open(embeddings_file, "wb") as f:
+            pickle.dump(embeddings, f)
+            logger.info(f"Saved embeddings to {embeddings_file}")
+except Exception as e:
+    logger.error(f"Error processing embeddings: {str(e)}")
+    logger.error(traceback.format_exc())
+    # Create fallback embeddings - these will not work properly
+    import numpy as np
+    embeddings = torch.tensor(np.zeros((max(1, len(search_terms)), 384)))
+    logger.warning(f"Created fallback embeddings with shape {embeddings.shape}")
+
+# CORS(main_app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 @app.route('/')
 def serve_index():
-    return send_file(os.path.join(os.path.dirname(__file__), "index.html"))
+    # Log the attempt to serve the index.html file
+    logger.info(f"Serving index.html from {os.path.join(os.path.dirname(__file__), 'index.html')}")
+    try:
+        return send_file(os.path.join(os.path.dirname(__file__), "index.html"))
+    except Exception as e:
+        logger.error(f"Error serving index.html: {str(e)}")
+        return f"Error serving index.html: {str(e)}", 500
 
 @app.route('/get_locations', methods=['GET'])
 def get_locations():
@@ -160,120 +235,224 @@ def get_locations():
     return jsonify(locations_data)
 
 @app.route('/suggest', methods=['GET'])
+@app.route('/api/query', methods=['GET'])  # Adding this alias route to handle requests to /api/query
+@app.route('/search/suggest', methods=['GET'])  # Another alias that might be used
 def suggest():
-    query = request.args.get('query', '').strip().lower()
-    if not query:
-        return jsonify([])
-
-    # Split query into components (e.g., "Delhi Airport" -> ["delhi", "airport"])
-    query_parts = query.split()
-    query_ngrams = generate_ngrams(query)
-
-    # Prefix matching with trie
-    prefix_matches = set()
-    for part in query_parts:
-        for key, idx in trie.items(prefix=part):
-            prefix_matches.add(idx)
-
-    # N-gram matching
-    ngram_matches = set()
-    for ngram in query_ngrams:
-        if ngram in ngram_dict:
-            ngram_matches.update(ngram_dict[ngram])
-
-    # Compute embedding for the query
-    query_embedding = model.encode(query, convert_to_tensor=True)
-
-    # Compute cosine similarities between the query and all search terms
-    similarities = util.cos_sim(query_embedding, embeddings)[0]
-
-    # Combine similarities with searchable items
-    # Use a dictionary to aggregate scores for each unique item
-    item_scores = {}
-    for term_idx, similarity in enumerate(similarities):
-        item_idx = term_to_item_idx[term_idx]
-        item = searchable_items[item_idx]
-        score = similarity.item()
+    try:
+        query = request.args.get('query', '').strip().lower()
+        logger.info(f"Received search query: '{query}' via {request.path}")
         
-        # Boost score if the city matches any query part
-        if any(part in item["city"] for part in query_parts):
-            score += 0.3
-        # Boost score based on query intent (category matching)
-        if "airport" in query and "airports" in item["layer"]:
-            score += 0.6  # Increased boost for airports
-        elif "temple" in query and "religious" in item["layer"]:
-            score += 0.4
-        # Boost score significantly if the query exactly matches a synonym
-        if query in item["synonyms"]:
-            score += 0.7
-        # Boost score for prefix matches
-        if item_idx in prefix_matches:
-            score += 0.1
-        # Boost score for n-gram matches
-        if item_idx in ngram_matches:
-            score += 0.15
-        # Additional boost for "Indira Gandhi" + "airport" in query for Delhi
-        if "indira gandhi" in query and "airport" in query and "delhi" in item["city"]:
-            score += 0.5
-        
-        # Aggregate the highest score for each item
-        if item_idx not in item_scores or score > item_scores[item_idx]["score"]:
-            item_scores[item_idx] = {
-                "display": item["display"],
-                "value": item["value"],
-                "score": score
-            }
+        if not query:
+            logger.info("Empty query, returning empty list")
+            return jsonify([])
 
-    # Add fuzzy matching for location names to handle misspellings
-    for item_idx, item in enumerate(searchable_items):
-        # Fuzzy match on the location name itself
-        fuzzy_score = fuzz.partial_ratio(query, item["value"].lower())
-        if fuzzy_score > 85:  # High threshold for near matches
-            score = fuzzy_score / 100.0 + 0.5  # Normalize and boost
-            # Apply category and city boosts
+        # Split query into components (e.g., "Delhi Airport" -> ["delhi", "airport"])
+        query_parts = query.split()
+        logger.info(f"Query parts: {query_parts}")
+        query_ngrams = generate_ngrams(query)
+
+        # Prefix matching with trie
+        prefix_matches = set()
+        for part in query_parts:
+            try:
+                for key, idx in trie.items(prefix=part):
+                    prefix_matches.add(idx)
+            except Exception as e:
+                logger.error(f"Error in prefix matching for part '{part}': {str(e)}")
+        
+        logger.info(f"Found {len(prefix_matches)} prefix matches")
+
+        # N-gram matching
+        ngram_matches = set()
+        for ngram in query_ngrams:
+            if ngram in ngram_dict:
+                ngram_matches.update(ngram_dict[ngram])
+        
+        logger.info(f"Found {len(ngram_matches)} n-gram matches")
+
+        # Compute embedding for the query
+        try:
+            query_embedding = model.encode(query, convert_to_tensor=True)
+            # Compute cosine similarities between the query and all search terms
+            similarities = util.cos_sim(query_embedding, embeddings)[0]
+            logger.info(f"Computed embeddings and similarities")
+        except Exception as e:
+            logger.error(f"Error computing embeddings: {str(e)}")
+            # Fallback to dummy similarities
+            import numpy as np
+            similarities = torch.tensor(np.zeros(len(search_terms)))
+            logger.warning(f"Using fallback similarities")
+
+        # Combine similarities with searchable items
+        # Use a dictionary to aggregate scores for each unique item
+        item_scores = {}
+        for term_idx, similarity in enumerate(similarities):
+            if term_idx >= len(term_to_item_idx):
+                continue
+            
+            item_idx = term_to_item_idx[term_idx]
+            if item_idx >= len(searchable_items):
+                continue
+                
+            item = searchable_items[item_idx]
+            score = similarity.item()
+            
+            # Boost score if the city matches any query part
             if any(part in item["city"] for part in query_parts):
                 score += 0.3
+            # Boost score based on query intent (category matching)
             if "airport" in query and "airports" in item["layer"]:
-                score += 0.6
+                score += 0.6  # Increased boost for airports
             elif "temple" in query and "religious" in item["layer"]:
                 score += 0.4
+            # Boost score significantly if the query exactly matches a synonym
+            if query in item["synonyms"]:
+                score += 0.7
+            # Boost score for prefix matches
+            if item_idx in prefix_matches:
+                score += 0.1
+            # Boost score for n-gram matches
+            if item_idx in ngram_matches:
+                score += 0.15
+            # Additional boost for "Indira Gandhi" + "airport" in query for Delhi
             if "indira gandhi" in query and "airport" in query and "delhi" in item["city"]:
                 score += 0.5
-            if item_idx in item_scores:
-                item_scores[item_idx]["score"] = max(item_scores[item_idx]["score"], score)
-            else:
+            
+            # Aggregate the highest score for each item
+            if item_idx not in item_scores or score > item_scores[item_idx]["score"]:
                 item_scores[item_idx] = {
                     "display": item["display"],
                     "value": item["value"],
                     "score": score
                 }
 
-    # Convert aggregated scores to list and sort
-    matches = list(item_scores.values())
-    
-    # Fallback to fuzzy matching for short queries (e.g., abbreviations like "IGI")
-    if len(query) <= 3 and not any(match["score"] > 0.6 for match in matches):
+        logger.info(f"Computed scores for {len(item_scores)} items")
+
+        # Add fuzzy matching for location names to handle misspellings
         for item_idx, item in enumerate(searchable_items):
-            for synonym in item["synonyms"]:
-                fuzzy_score = fuzz.ratio(query, synonym)
-                if fuzzy_score > 80:
-                    matches.append({
-                        "display": item["display"],
-                        "value": item["value"],
-                        "score": fuzzy_score / 100.0 + 0.5
-                    })
+            try:
+                # Fuzzy match on the location name itself
+                fuzzy_score = fuzz.partial_ratio(query, item["value"].lower())
+                if fuzzy_score > 85:  # High threshold for near matches
+                    score = fuzzy_score / 100.0 + 0.5  # Normalize and boost
+                    # Apply category and city boosts
+                    if any(part in item["city"] for part in query_parts):
+                        score += 0.3
+                    if "airport" in query and "airports" in item["layer"]:
+                        score += 0.6
+                    elif "temple" in query and "religious" in item["layer"]:
+                        score += 0.4
+                    if "indira gandhi" in query and "airport" in query and "delhi" in item["city"]:
+                        score += 0.5
+                    if item_idx in item_scores:
+                        item_scores[item_idx]["score"] = max(item_scores[item_idx]["score"], score)
+                    else:
+                        item_scores[item_idx] = {
+                            "display": item["display"],
+                            "value": item["value"],
+                            "score": score
+                        }
+            except Exception as e:
+                logger.error(f"Error in fuzzy matching for item {item_idx}: {str(e)}")
 
-    # Filter matches with score > 0.5, sort by score, limit to top 5
-    matches = [match for match in matches if match["score"] > 0.5]
-    matches.sort(key=lambda x: x["score"], reverse=True)
-    matches = matches[:5]
+        # Convert aggregated scores to list and sort
+        matches = list(item_scores.values())
+        
+        # Fallback to fuzzy matching for short queries (e.g., abbreviations like "IGI")
+        if len(query) <= 3 and not any(match["score"] > 0.6 for match in matches):
+            for item_idx, item in enumerate(searchable_items):
+                for synonym in item["synonyms"]:
+                    fuzzy_score = fuzz.ratio(query, synonym)
+                    if fuzzy_score > 80:
+                        matches.append({
+                            "display": item["display"],
+                            "value": item["value"],
+                            "score": fuzzy_score / 100.0 + 0.5
+                        })
 
-    # Remove duplicates by display value (already handled by item_scores)
-    return jsonify(matches)
+        # Filter matches with score > 0.5, sort by score, limit to top 5
+        matches = [match for match in matches if match["score"] > 0.5]
+        matches.sort(key=lambda x: x["score"], reverse=True)
+        matches = matches[:5]
 
-@app.route('/', methods=['GET'])
-def index():
-    return "Search API is running!", 200
+        logger.info(f"Returning {len(matches)} matches")
+        for idx, match in enumerate(matches):
+            logger.info(f"Match {idx+1}: {match['display']} (score: {match['score']:.2f})")
+        
+        # Allow CORS for this endpoint
+        response = jsonify(matches)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+        
+    except Exception as e:
+        logger.error(f"Error in suggest endpoint: {str(e)}")
+        logger.error(traceback.format_exc())
+        
+        # Return error response
+        response = jsonify({"error": str(e)})
+        response.status_code = 500
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+
+@app.route('/debug', methods=['GET'])
+def debug():
+    """Endpoint to provide debug information about the search configuration"""
+    try:
+        # Get environment information
+        env_vars = {key: value for key, value in os.environ.items() 
+                  if key.startswith('K_') or 'PORT' in key or 'PATH' in key}
+        
+        # Get request information
+        request_info = {
+            "path": request.path,
+            "url": request.url,
+            "base_url": request.base_url,
+            "host_url": request.host_url,
+            "host": request.host,
+            "endpoint": request.endpoint,
+            "headers": dict(request.headers),
+        }
+        
+        # Get available routes
+        available_routes = []
+        for rule in app.url_map.iter_rules():
+            available_routes.append({
+                "endpoint": rule.endpoint,
+                "methods": [m for m in rule.methods if m not in ['HEAD', 'OPTIONS']],
+                "path": str(rule),
+            })
+            
+        # Main debug info
+        debug_info = {
+            "is_cloud_run": os.environ.get('K_SERVICE') is not None,
+            "data_dir": data_dir,
+            "appsheet_csv_exists": os.path.exists(appsheet_csv),
+            "embeddings_file_exists": os.path.exists(embeddings_file),
+            "num_searchable_items": len(searchable_items),
+            "num_search_terms": len(search_terms),
+            "example_items": searchable_items[:3] if searchable_items else [],
+            "environment": env_vars,
+            "request_info": request_info,
+            "available_routes": available_routes
+        }
+        
+        # Add CORS headers
+        response = jsonify(debug_info)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+    except Exception as e:
+        logger.error(f"Error in debug endpoint: {str(e)}")
+        logger.error(traceback.format_exc())
+        
+        response = jsonify({"error": str(e)})
+        response.status_code = 500
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+
+@app.route('/healthz', methods=['GET'])
+def health_check():
+    """Health check endpoint"""
+    return "OK", 200
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))

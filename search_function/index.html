@@ -3,81 +3,401 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Location Search Test</title>
+    <title>Travel Search</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
-            background-color: #f0f0f0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .search-container {
-            position: relative;
-            width: 300px;
-        }
-        #search-bar {
+        
+        .container {
             width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            max-width: 960px;
+            padding: 20px;
             box-sizing: border-box;
         }
+        
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1:after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #4c9eaf, #65c6bd);
+            border-radius: 3px;
+        }
+        
+        .tagline {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-top: 20px;
+        }
+        
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .search-box {
+            display: flex;
+            position: relative;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-radius: 50px;
+            background: white;
+            padding: 5px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+            z-index: 1;
+        }
+        
+        #search-bar {
+            width: 100%;
+            padding: 15px 15px 15px 50px;
+            font-size: 16px;
+            border: none;
+            border-radius: 50px;
+            outline: none;
+            font-family: 'Poppins', sans-serif;
+            background: transparent;
+        }
+        
+        #search-bar:focus {
+            box-shadow: 0 0 0 2px rgba(76, 158, 175, 0.1);
+        }
+        
         #suggestions {
             position: absolute;
-            top: 40px;
+            top: 70px;
             left: 0;
             right: 0;
             background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            max-height: 200px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            max-height: 400px;
             overflow-y: auto;
             display: none;
             z-index: 1000;
         }
+        
         .suggestion-item {
-            padding: 10px;
+            padding: 12px 20px;
             cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.2s;
         }
+        
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+        
         .suggestion-item:hover {
-            background-color: #f0f0f0;
+            background-color: #f8f9fa;
+            transform: translateX(5px);
+        }
+        
+        .results-container {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .result-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .result-title {
+            color: #4c9eaf;
+            margin: 0 0 10px 0;
+            font-size: 1.3rem;
+        }
+        
+        .result-category {
+            display: inline-block;
+            padding: 3px 10px;
+            background-color: rgba(76, 158, 175, 0.1);
+            color: #4c9eaf;
+            border-radius: 50px;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+        }
+        
+        .result-description {
+            color: #5d6778;
+            margin-bottom: 15px;
+        }
+        
+        .result-info {
+            margin-top: 15px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .info-item {
+            margin-right: 15px;
+            display: inline-block;
+        }
+        
+        .info-item i {
+            margin-right: 5px;
+        }
+        
+        .popular-searches {
+            margin-top: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .popular-searches h3 {
+            color: #4c9eaf;
+            margin-top: 0;
+        }
+        
+        .search-tag {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 5px;
+            background-color: rgba(76, 158, 175, 0.1);
+            color: #4c9eaf;
+            border-radius: 50px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .search-tag:hover {
+            background-color: rgba(76, 158, 175, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .loading {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            color: #7f8c8d;
+        }
+        
+        .loading-dots span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #4c9eaf;
+            margin: 0 3px;
+            animation: bounce 1.5s infinite ease-in-out both;
+        }
+        
+        .loading-dots span:nth-child(1) { animation-delay: -0.3s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.15s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0s; }
+        
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        
+        .nav-links {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e8ed;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .nav-link {
+            color: #4c9eaf;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s;
+        }
+        
+        .nav-link i {
+            margin-right: 8px;
+        }
+        
+        .nav-link:hover {
+            color: #65c6bd;
+            transform: translateX(3px);
         }
     </style>
 </head>
 <body>
-    <div class="search-container">
-        <input type="text" id="search-bar" placeholder="Enter location name..." autocomplete="off">
-        <div id="suggestions"></div>
+    <div class="container">
+        <div class="header">
+            <h1>Travel Search</h1>
+            <div class="tagline">Find attractions, hotels, restaurants and more</div>
+        </div>
+        
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="search-bar" placeholder="Search for locations in Delhi..." autocomplete="off">
+            </div>
+            <div id="suggestions"></div>
+        </div>
+        
+        <div class="popular-searches">
+            <h3>Popular Searches</h3>
+            <div class="search-tags">
+                <span class="search-tag" onclick="usePopularSearch(this)">India Gate</span>
+                <span class="search-tag" onclick="usePopularSearch(this)">Red Fort</span>
+                <span class="search-tag" onclick="usePopularSearch(this)">Qutub Minar</span>
+                <span class="search-tag" onclick="usePopularSearch(this)">Chandni Chowk</span>
+                <span class="search-tag" onclick="usePopularSearch(this)">Lotus Temple</span>
+                <span class="search-tag" onclick="usePopularSearch(this)">Delhi Metro</span>
+            </div>
+        </div>
+        
+        <div id="results" class="results-container">
+            <!-- Results will be added here -->
+        </div>
+        
+        <div class="nav-links">
+            <a href="/" class="nav-link"><i class="fas fa-home"></i> Home</a>
+            <a href="/rag/test" class="nav-link"><i class="fas fa-comments"></i> Ask AI Guide</a>
+        </div>
     </div>
 
     <script>
         const searchBar = document.getElementById("search-bar");
         const suggestionsDiv = document.getElementById("suggestions");
-
-        // Fetch suggestions from the backend
+        const resultsDiv = document.getElementById("results");
+        
+        // Update the getSuggestions function with loading indicator
         async function getSuggestions(query) {
             if (!query) {
-                console.log("No query provided, returning empty suggestions.");
+                suggestionsDiv.style.display = "none";
                 return [];
             }
+            
+            // Show loading indicator
+            suggestionsDiv.innerHTML = `
+                <div class="loading suggestion-item">
+                    <div class="loading-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <span style="margin-left: 10px;">Searching...</span>
+                </div>
+            `;
+            suggestionsDiv.style.display = "block";
+            
             try {
                 console.log("Fetching suggestions for query:", query);
-                const response = await fetch(`/suggest?query=${encodeURIComponent(query)}`);
+                const response = await fetch(`/search/suggest?query=${encodeURIComponent(query)}`);
                 if (!response.ok) {
-                    console.error("Fetch failed with status:", response.status);
+                    suggestionsDiv.innerHTML = '<div class="suggestion-item">No matches found</div>';
                     return [];
                 }
                 const suggestions = await response.json();
-                console.log("Suggestions received:", suggestions);
                 return suggestions;
             } catch (error) {
                 console.error("Error fetching suggestions:", error);
+                suggestionsDiv.innerHTML = '<div class="suggestion-item">Error fetching results</div>';
                 return [];
             }
+        }
+        
+        // Show details for a selected location
+        function showLocationDetails(location) {
+            // Clear previous results
+            resultsDiv.innerHTML = "";
+            
+            // Create result card
+            const card = document.createElement("div");
+            card.className = "result-card";
+            
+            // Determine icon based on category
+            let categoryIcon = "map-marker-alt";
+            let categoryName = "Place";
+            
+            if (location.category) {
+                const category = location.category.toLowerCase();
+                if (category.includes("hotel") || category.includes("lodging")) {
+                    categoryIcon = "hotel";
+                    categoryName = "Hotel";
+                } else if (category.includes("restaurant") || category.includes("food")) {
+                    categoryIcon = "utensils";
+                    categoryName = "Restaurant";
+                } else if (category.includes("transport") || category.includes("metro")) {
+                    categoryIcon = "train";
+                    categoryName = "Transport";
+                } else if (category.includes("monument") || category.includes("historical")) {
+                    categoryIcon = "landmark";
+                    categoryName = "Monument";
+                }
+            }
+            
+            card.innerHTML = `
+                <h2 class="result-title">${location.display || location.value}</h2>
+                <div class="result-category"><i class="fas fa-${categoryIcon}"></i> ${categoryName}</div>
+                <p class="result-description">
+                    ${location.description || "A popular destination in Delhi. Click below for more information."}
+                </p>
+                <div class="result-info">
+                    <div class="info-item"><i class="fas fa-map-marker-alt"></i> ${location.area || "Delhi"}</div>
+                    <div class="info-item"><i class="fas fa-clock"></i> Open Now</div>
+                </div>
+            `;
+            
+            resultsDiv.appendChild(card);
+            resultsDiv.style.display = "block";
+            
+            // Scroll to results
+            resultsDiv.scrollIntoView({ behavior: "smooth" });
         }
 
         // Event listener for input in the search bar
@@ -89,20 +409,18 @@
             suggestionsDiv.innerHTML = "";
             suggestionsDiv.style.display = suggestions.length > 0 ? "block" : "none";
 
-            if (suggestions.length === 0) {
-                console.log("No suggestions found for input:", input);
-            }
-
             // Add new suggestions
             suggestions.forEach(suggestion => {
                 const div = document.createElement("div");
                 div.className = "suggestion-item";
-                div.textContent = suggestion.display;
+                div.innerHTML = `<i class="fas fa-map-marker-alt" style="margin-right: 8px; color: #4c9eaf;"></i> ${suggestion.display}`;
                 div.addEventListener("click", () => {
                     // Auto-fill the search bar with the selected suggestion
                     searchBar.value = suggestion.value;
                     suggestionsDiv.style.display = "none";
-                    console.log("Auto-filled with:", suggestion.value);
+                    
+                    // Show the location details
+                    showLocationDetails(suggestion);
                 });
                 suggestionsDiv.appendChild(div);
             });
@@ -114,6 +432,13 @@
                 suggestionsDiv.style.display = "none";
             }
         });
+        
+        // Function to use popular search
+        function usePopularSearch(element) {
+            searchBar.value = element.textContent;
+            searchBar.dispatchEvent(new Event('input'));
+            searchBar.focus();
+        }
     </script>
 </body>
 </html>

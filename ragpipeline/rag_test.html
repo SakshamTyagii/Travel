@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Travel Assistant - Ask AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1:after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #4c9eaf, #65c6bd);
+            border-radius: 3px;
+        }
+        
+        .tagline {
+            font-size: 1rem;
+            color: #7f8c8d;
+            margin-top: 15px;
+        }
+        
+        .chat-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .chat-messages {
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.3s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .user-message {
+            text-align: right;
+        }
+        
+        .ai-message {
+            text-align: left;
+        }
+        
+        .message-bubble {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 18px;
+            max-width: 80%;
+            margin-top: 5px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+        }
+        
+        .user-message .message-bubble {
+            background: linear-gradient(90deg, #4c9eaf, #65c6bd);
+            color: white;
+            border-top-right-radius: 4px;
+        }
+        
+        .ai-message .message-bubble {
+            background-color: #f1f1f1;
+            color: #333;
+            border-top-left-radius: 4px;
+        }
+        
+        .message-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            background-color: #e1e8ed;
+            vertical-align: middle;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #fff;
+        }
+        
+        .user-message .message-avatar {
+            margin-left: 8px;
+            margin-right: 0;
+            background: linear-gradient(90deg, #4c9eaf, #65c6bd);
+        }
+        
+        .ai-message .message-avatar {
+            background: linear-gradient(90deg, #2c3e50, #34495e);
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
+        
+        #query {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #e1e8ed;
+            border-radius: 50px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            transition: border 0.3s;
+        }
+        
+        #query:focus {
+            border-color: #4c9eaf;
+            box-shadow: 0 0 0 2px rgba(76, 158, 175, 0.1);
+        }
+        
+        #query::placeholder {
+            color: #aaa;
+        }
+        
+        button {
+            margin-left: 10px;
+            padding: 0 20px;
+            background: linear-gradient(90deg, #4c9eaf, #65c6bd);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: linear-gradient(90deg, #65c6bd, #4c9eaf);
+            box-shadow: 0 2px 10px rgba(76, 158, 175, 0.2);
+        }
+        
+        .example-questions {
+            margin-top: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .example-questions h3 {
+            color: #4c9eaf;
+            margin-top: 0;
+        }
+        
+        .example-tag {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 5px;
+            background-color: rgba(76, 158, 175, 0.1);
+            color: #4c9eaf;
+            border-radius: 50px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .example-tag:hover {
+            background-color: rgba(76, 158, 175, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .loading-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .loading-dots span {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #4c9eaf;
+            margin: 0 5px;
+            animation: bounce 1.5s infinite ease-in-out both;
+        }
+        
+        .loading-dots span:nth-child(1) { animation-delay: -0.3s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.15s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0s; }
+        
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        
+        .nav-links {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e8ed;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .nav-link {
+            color: #4c9eaf;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s;
+        }
+        
+        .nav-link i {
+            margin-right: 8px;
+        }
+        
+        .nav-link:hover {
+            color: #65c6bd;
+            transform: translateX(3px);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>AI Travel Guide</h1>
+        <div class="tagline">Ask questions about places you want to visit</div>
+    </div>
+    
+    <div class="chat-container">
+        <div class="chat-messages" id="chat-messages">
+            <!-- AI welcome message -->
+            <div class="message ai-message">
+                <span class="message-avatar"><i class="fas fa-robot"></i></span>
+                <div class="message-bubble">
+                    Hello! I'm your travel assistant. Ask me about places in Delhi like India Gate, Red Fort, or any attractions you're curious about.
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-input">
+            <input type="text" id="query" placeholder="Type your question here..." autocomplete="off">
+            <button onclick="askQuestion()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    
+    <div class="example-questions">
+        <h3>Try asking about:</h3>
+        <div class="example-tags">
+            <span class="example-tag" onclick="useExample(this)">Best time to visit India Gate?</span>
+            <span class="example-tag" onclick="useExample(this)">Is Red Fort good for kids?</span>
+            <span class="example-tag" onclick="useExample(this)">Popular foods at Chandni Chowk?</span>
+            <span class="example-tag" onclick="useExample(this)">How crowded is Qutub Minar on weekends?</span>
+            <span class="example-tag" onclick="useExample(this)">Wheelchair accessibility at Humayun's Tomb?</span>
+        </div>
+    </div>
+    
+    <div class="nav-links">
+        <a href="/" class="nav-link"><i class="fas fa-home"></i> Home</a>
+        <a href="/search" class="nav-link"><i class="fas fa-search"></i> Search Locations</a>
+    </div>
+
+    <script>
+        const queryInput = document.getElementById("query");
+        const chatMessages = document.getElementById("chat-messages");
+        
+        // Enable pressing Enter to send question
+        queryInput.addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                askQuestion();
+            }
+        });
+        
+        // Add this function before your askQuestion function
+        function isSimpleQuery(query) {
+            const simpleQueries = [
+                "hi", "hello", "hey", "greetings", "howdy", 
+                "thanks", "thank you", "bye", "goodbye"
+            ];
+            return simpleQueries.includes(query.toLowerCase().trim());
+        }
+
+        // Add this function to get instant responses for simple queries
+        function getSimpleResponse(query) {
+            query = query.toLowerCase().trim();
+            
+            if (query === "hi" || query === "hello" || query === "hey" || 
+                query === "greetings" || query === "howdy") {
+                return "Hello! I'm your Delhi travel assistant. How can I help you today?";
+            }
+            
+            if (query === "thanks" || query === "thank you") {
+                return "You're welcome! Feel free to ask if you have any other questions about Delhi.";
+            }
+            
+            if (query === "bye" || query === "goodbye") {
+                return "Goodbye! Have a great trip to Delhi if you're planning to visit.";
+            }
+            
+            return null; // Not a simple query
+        }
+
+        // Modify your askQuestion function to check for simple queries first
+        async function askQuestion() {
+            const query = queryInput.value.trim();
+            if (!query) return;
+            
+            // Add user message to chat
+            addMessage(query, 'user');
+            
+            // Clear input
+            queryInput.value = "";
+            
+            // Check if this is a simple query that can be answered immediately
+            const simpleResponse = getSimpleResponse(query);
+            if (simpleResponse) {
+                addMessage(simpleResponse, 'ai');
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                return;
+            }
+            
+            // For non-simple queries, continue with RAG pipeline
+            const loadingId = addLoadingIndicator();
+            
+            try {
+                // Rest of your code remains the same
+                const response = await fetch('/rag/query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query: query })
+                });
+                
+                // Remove loading indicator
+                removeLoadingIndicator(loadingId);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                addMessage(data.answer || "I'm not sure about that. Could you try asking in a different way?", 'ai');
+            } catch (error) {
+                // Remove loading indicator
+                removeLoadingIndicator(loadingId);
+                addMessage("Sorry, I encountered an error: " + error.message, 'ai');
+                console.error("API error:", error);
+            }
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            const avatar = document.createElement('span');
+            avatar.className = 'message-avatar';
+            
+            if (sender === 'user') {
+                avatar.innerHTML = '<i class="fas fa-user"></i>';
+            } else {
+                avatar.innerHTML = '<i class="fas fa-robot"></i>';
+            }
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.textContent = text;
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(bubble);
+            
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function addLoadingIndicator() {
+            const id = 'loading-' + Date.now();
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = id;
+            loadingDiv.className = 'message ai-message loading-indicator';
+            loadingDiv.innerHTML = `
+                <span class="message-avatar"><i class="fas fa-robot"></i></span>
+                <div class="message-bubble loading-dots">
+                    <span></span><span></span><span></span>
+                </div>
+            `;
+            
+            chatMessages.appendChild(loadingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return id;
+        }
+        
+        function removeLoadingIndicator(id) {
+            const loadingElement = document.getElementById(id);
+            if (loadingElement) {
+                loadingElement.remove();
+            }
+        }
+        
+        function useExample(element) {
+            queryInput.value = element.textContent;
+            queryInput.focus();
+        }
+    </script>
+</body>
+</html>
