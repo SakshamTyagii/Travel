@@ -1,0 +1,5 @@
+fastapi==0.103.1
+uvicorn==0.23.2
+pydantic>=2.5.0  # Use a newer version that has better Python 3.13 support
+python-dotenv==1.0.0
+jellyfish==1.0.0

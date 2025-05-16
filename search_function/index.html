@@ -337,7 +337,12 @@
             
             try {
                 console.log("Fetching suggestions for query:", query);
-                const response = await fetch(`/search/suggest?query=${encodeURIComponent(query)}`);
+                const response = await fetch(`http://127.0.0.1:8000/suggest?query=${encodeURIComponent(query)}`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
                 if (!response.ok) {
                     suggestionsDiv.innerHTML = '<div class="suggestion-item">No matches found</div>';
                     return [];

@@ -121,6 +121,197 @@ def generate_additional_synonyms(location, city, layer):
         synonyms.append(" ".join(parts[:2]))  # First two words
     
     return synonyms
+def get_keyboard_neighbors():
+    """Return a dictionary of neighboring keys on a QWERTY keyboard"""
+    return {
+        'a': ['q', 'w', 's', 'z'],
+        'b': ['v', 'g', 'h', 'n'],
+        'c': ['x', 'd', 'f', 'v'],
+        'd': ['s', 'e', 'r', 'f', 'c', 'x'],
+        'e': ['w', 's', 'd', 'r'],
+        'f': ['d', 'r', 't', 'g', 'v', 'c'],
+        'g': ['f', 't', 'y', 'h', 'b', 'v'],
+        'h': ['g', 'y', 'u', 'j', 'n', 'b'],
+        'i': ['u', 'j', 'k', 'o'],
+        'j': ['h', 'u', 'i', 'k', 'm', 'n'],
+        'k': ['j', 'i', 'o', 'l', 'm'],
+        'l': ['k', 'o', 'p', ';'],
+        'm': ['n', 'j', 'k', ','],
+        'n': ['b', 'h', 'j', 'm'],
+        'o': ['i', 'k', 'l', 'p'],
+        'p': ['o', 'l', '[', ';'],
+        'q': ['1', '2', 'w', 'a'],
+        'r': ['e', 'd', 'f', 't'],
+        's': ['a', 'w', 'e', 'd', 'x', 'z'],
+        't': ['r', 'f', 'g', 'y'],
+        'u': ['y', 'h', 'j', 'i'],
+        'v': ['c', 'f', 'g', 'b'],
+        'w': ['q', 'a', 's', 'e'],
+        'x': ['z', 's', 'd', 'c'],
+        'y': ['t', 'g', 'h', 'u'],
+        'z': ['a', 's', 'x'],
+        '0': ['9', '-', '='],
+        '1': ['`', 'q', '2'],
+        '2': ['1', 'q', 'w', '3'],
+        '3': ['2', 'w', 'e', '4'],
+        '4': ['3', 'e', 'r', '5'],
+        '5': ['4', 'r', 't', '6'],
+        '6': ['5', 't', 'y', '7'],
+        '7': ['6', 'y', 'u', '8'],
+        '8': ['7', 'u', 'i', '9'],
+        '9': ['8', 'i', 'o', '0'],
+        ' ': [',', '.', '/']  # Space bar neighboring keys
+    }
+
+def generate_keyboard_variations(word):
+    """Generate variations of a word with possible keyboard typos"""
+    if not word or len(word) < 2:  # Too short for variations
+        return set()
+        
+    neighbors = get_keyboard_neighbors()
+    variations = set()
+    
+    # Single character typos
+    for i in range(len(word)):
+        # Character replacement (pressing a neighboring key)
+        char = word[i]
+        if char in neighbors:
+            for neighbor in neighbors[char]:
+                variations.add(word[:i] + neighbor + word[i+1:])
+        
+        # Character omission (not pressing a key)
+        if len(word) > 2:  # Ensure we don't create too-short strings
+            variations.add(word[:i] + word[i+1:])
+        
+        # Character insertion (pressing an extra key)
+        if char in neighbors:
+            for neighbor in neighbors[char]:
+                variations.add(word[:i] + neighbor + word[i:])
+        
+        # Character transposition (pressing keys in wrong order)
+        if i < len(word) - 1:
+            variations.add(word[:i] + word[i+1] + word[i] + word[i+2:])
+    
+    # Double letter errors (pressing a key twice or not pressing twice)
+    for i in range(len(word) - 1):
+        if word[i] == word[i+1]:  # Double letter
+            variations.add(word[:i] + word[i+1:])  # Remove duplicate
+        else:
+            variations.add(word[:i] + word[i] + word[i] + word[i+1:])  # Add duplicate
+    
+    return variations
+
+def add_transliteration_variations(word):
+    """Add common transliterations for Indian words"""
+    if not word or len(word) < 3:  # Too short for meaningful transliterations
+        return set()
+        
+    variations = set()
+    
+    # Common transliteration patterns
+    transliterations = {
+        'a': ['aa', 'ah'],
+        'aa': ['a', 'ah'],
+        'ee': ['i', 'ea'],
+        'i': ['ee', 'ea'],
+        'u': ['oo'],
+        'oo': ['u'],
+        'v': ['w'],
+        'w': ['v'],
+        'sh': ['s'],
+        's': ['sh'],
+        'k': ['c', 'q'],
+        'q': ['k'],
+        'c': ['k', 's'],
+        'z': ['j'],
+        'j': ['z'],
+        'ph': ['f'],
+        'f': ['ph'],
+        'ksh': ['x'],
+        'th': ['t'],
+        'dh': ['d'],
+        'fort': ['qila', 'kila'],
+        'temple': ['mandir'],
+        'road': ['marg', 'path']
+    }
+    
+    # Generate variations based on transliteration patterns
+    for pattern, replacements in transliterations.items():
+        if pattern in word:
+            for replacement in replacements:
+                variations.add(word.replace(pattern, replacement))
+    
+    return variations
+
+def enhance_search_query(query):
+    """Generate keyboard-based variations of the search query"""
+    if not query or len(query) < 3:  # Too short for meaningful variations
+        return [query]
+        
+    words = query.split()
+    all_variations = [query]  # Start with original query
+    
+    # For very short queries, be more selective to avoid noise
+    if len(query) <= 5:
+        max_variations = 3
+    else:
+        max_variations = 10
+    
+    # Generate variations for each word
+    for word in words:
+        if len(word) > 2:  # Only generate variations for words with 3+ chars
+            # Get keyboard typo variations
+            keyboard_variations = generate_keyboard_variations(word)
+            # Get transliteration variations
+            trans_variations = add_transliteration_variations(word)
+            # Combine variations
+            all_word_variations = list(keyboard_variations.union(trans_variations))
+            
+            # Limit the number of variations to avoid exponential growth
+            if len(all_word_variations) > max_variations:
+                all_word_variations = all_word_variations[:max_variations]
+                
+            # Add each variation to the list
+            for variation in all_word_variations:
+                all_variations.append(query.replace(word, variation))
+    
+    # Deduplicate
+    return list(set(all_variations))
+
+def ngram_similarity(text1, text2, n=3):
+    """Calculate n-gram similarity between two texts"""
+    if not text1 or not text2:
+        return 0.0
+    
+    if len(text1) < n or len(text2) < n:
+        # For very short strings, fall back to direct comparison
+        return 1.0 if text1 == text2 else 0.0
+    
+    ngrams1 = set(generate_ngrams(text1, n))
+    ngrams2 = set(generate_ngrams(text2, n))
+    
+    intersection = ngrams1.intersection(ngrams2)
+    union = ngrams1.union(ngrams2)
+    
+    return len(intersection) / len(union)
+
+import jellyfish
+
+def get_phonetic_code(text):
+    """Get phonetic representation of text using Soundex algorithm"""
+    if not text:
+        return ""
+    
+    words = text.split()
+    if not words:
+        return ""
+        
+    # For multi-word text, get phonetic codes for each word
+    if len(words) > 1:
+        return " ".join([jellyfish.soundex(word) for word in words])
+    
+    # For single word
+    return jellyfish.soundex(text)
 
 # Prepare a list of searchable terms (Location + synonyms)
 searchable_items = []  # Deduplicated list of items
@@ -251,6 +442,14 @@ def suggest():
         logger.info(f"Query parts: {query_parts}")
         query_ngrams = generate_ngrams(query)
 
+        # ENHANCEMENT: Generate keyboard and transliteration variations
+        query_variations = enhance_search_query(query)
+        logger.info(f"Generated {len(query_variations)} query variations")
+        
+        # Get phonetic code for query
+        query_phonetic = get_phonetic_code(query)
+        logger.info(f"Phonetic code for query: {query_phonetic}")
+
         # Prefix matching with trie
         prefix_matches = set()
         for part in query_parts:
@@ -352,6 +551,30 @@ def suggest():
                             "value": item["value"],
                             "score": score
                         }
+                
+                # Try variations of the query for fuzzy matching
+                for variation in query_variations:
+                    if variation != query:  # Skip the original query we already checked
+                        var_score = fuzz.partial_ratio(variation, item["value"].lower())
+                        if var_score > fuzzy_score:
+                            fuzzy_score = var_score
+                            logger.info(f"Better match with variation '{variation}': {fuzzy_score}")
+                
+                # Check for phonetic matches
+                item_phonetic = get_phonetic_code(item["value"])
+                if query_phonetic == item_phonetic and item_phonetic:
+                    # Boost score for phonetic matches
+                    phonetic_boost = 0.3
+                    score = max(score, fuzzy_score / 100.0 + phonetic_boost)
+                    logger.info(f"Phonetic match for '{query}' and '{item['value']}'")
+                
+                # Also check phonetic matches against synonyms
+                for syn in item["synonyms"]:
+                    syn_phonetic = get_phonetic_code(syn)
+                    if query_phonetic == syn_phonetic and syn_phonetic:
+                        phonetic_boost = 0.4  # Higher boost for synonym phonetic matches
+                        score = max(score, fuzzy_score / 100.0 + phonetic_boost)
+                        logger.info(f"Phonetic match for '{query}' and synonym '{syn}'")
             except Exception as e:
                 logger.error(f"Error in fuzzy matching for item {item_idx}: {str(e)}")
 

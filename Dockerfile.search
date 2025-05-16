@@ -1,0 +1,17 @@
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Copy only the files needed for the search service
+COPY search_service.py ./
+COPY search_function/ ./search_function/
+COPY requirements-search.txt ./requirements.txt
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Set environment variables
+ENV PORT=8080
+
+# Run the FastAPI app
+CMD exec uvicorn search_service:app --host 0.0.0.0 --port ${PORT}
