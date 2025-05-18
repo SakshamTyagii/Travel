@@ -25,8 +25,8 @@ def chunk_reviews(reviews, max_chars=8000):
 grouped_reviews = reviews_df.groupby('place_name')['review_text'].apply(lambda x: chunk_reviews(' '.join(x))).reset_index()
 
 # Step 2: Define Gemini API interaction
-GEMINI_API_KEY = "AIzaSyDg7QgSMxsUbYAX7vABCPvUN03NUocYpcY"
-GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
 
 @retry(
     stop=stop_after_attempt(3),

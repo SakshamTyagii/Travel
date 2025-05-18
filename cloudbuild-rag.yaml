@@ -1,0 +1,42 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/rag-service:latest', 
+           '-f', 'Dockerfile.rag', '.']
+  
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/rag-service:latest']
+  
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+    - 'run'
+    - 'deploy'
+    - 'rag-service'
+    - '--image'
+    - 'gcr.io/$PROJECT_ID/rag-service:latest'
+    - '--region'
+    - 'asia-south1'
+    - '--platform'
+    - 'managed'
+    - '--allow-unauthenticated'
+    - '--memory'
+    - '2Gi'
+    - '--cpu'
+    - '1'
+    - '--timeout'
+    - '300s'
+    - '--set-env-vars'
+    - 'CLOUD_RUN_SERVICE=true,GCS_BUCKET_NAME=riitii-app-chroma-db,GEMINI_API_KEY=${_GEMINI_API_KEY}'
+    - '--min-instances'
+    - '0'  # Add this to control minimum instances
+    - '--max-instances'
+    - '1'  # Limit max instances during debugging
+    
+images:
+  - 'gcr.io/$PROJECT_ID/rag-service:latest'
+
+substitutions:
+  _GEMINI_API_KEY: ${_GEMINI_API_KEY}  # This will be provided during the build command

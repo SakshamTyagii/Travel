@@ -32,7 +32,7 @@ images:
 
 # Define substitution variables for secrets
 substitutions:
-  _GEMINI_API_KEY: "AIzaSyDg7QgSMxsUbYAX7vABCPvUN03NUocYpcY"  # Your API key from .env
+  _GEMINI_API_KEY: "AIzaSyCyQ2e4A_8_U0_kdRox9tLS_jE4PO7bU74"  # Updated to your new API key
   _GCS_BUCKET_NAME: "riitii-app-chroma-db"  # Your bucket name from .env
 
 # Add options for logging to resolve service account error

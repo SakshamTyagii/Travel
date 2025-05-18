@@ -337,7 +337,9 @@
             
             try {
                 console.log("Fetching suggestions for query:", query);
-                const response = await fetch(`http://127.0.0.1:8000/suggest?query=${encodeURIComponent(query)}`, {
+                // GCP deployed endpoint
+                const apiUrl = "https://search-service-422083294581.asia-south1.run.app/suggest";
+                const response = await fetch(`${apiUrl}?query=${encodeURIComponent(query)}`, {
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'

@@ -1,0 +1,5 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/sonorous-house-454914-j7/search-service', '-f', 'Dockerfile.search', '.']
+images:
+- 'gcr.io/sonorous-house-454914-j7/search-service'
