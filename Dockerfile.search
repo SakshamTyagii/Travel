@@ -5,6 +5,9 @@ WORKDIR /app
 # Copy only the files needed for the search service
 COPY search_service.py ./
 COPY search_function/ ./search_function/
+# Explicitly ensure data directory is included (redundant but makes it clear)
+# COPY search_function/data/ ./search_function/data/enhanced_places.jsonxxxxxxxxxxxxxxx
+# COPY search_function/data/ ./search_function/data/places.json
 COPY requirements-search.txt ./requirements.txt
 
 # Install dependencies
@@ -12,6 +15,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Set environment variables
 ENV PORT=8080
+
+# Debug: List contents to verify data is copied correctly
+RUN echo "Listing search_function directory:" && \
+    ls -la search_function && \
+    echo "Listing data directory:" && \
+    ls -la search_function/data || echo "Data directory not found!"
 
 # Run the FastAPI app
 CMD exec uvicorn search_service:app --host 0.0.0.0 --port ${PORT}

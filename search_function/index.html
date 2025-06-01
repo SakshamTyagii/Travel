@@ -273,6 +273,13 @@
             color: #65c6bd;
             transform: translateX(3px);
         }
+
+        .highlight {
+            font-weight: bold;
+            background-color: rgba(255, 200, 0, 0.3);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
     </style>
 </head>
 <body>
@@ -296,9 +303,9 @@
                 <span class="search-tag" onclick="usePopularSearch(this)">India Gate</span>
                 <span class="search-tag" onclick="usePopularSearch(this)">Red Fort</span>
                 <span class="search-tag" onclick="usePopularSearch(this)">Qutub Minar</span>
-                <span class="search-tag" onclick="usePopularSearch(this)">Chandni Chowk</span>
+                <span class="search-tag" onclick="usePopularSearch(this)">Calangute Beach</span>
                 <span class="search-tag" onclick="usePopularSearch(this)">Lotus Temple</span>
-                <span class="search-tag" onclick="usePopularSearch(this)">Delhi Metro</span>
+                <span class="search-tag" onclick="usePopularSearch(this)">Aguada Fort</span>
             </div>
         </div>
         
@@ -307,8 +314,8 @@
         </div>
         
         <div class="nav-links">
-            <a href="/" class="nav-link"><i class="fas fa-home"></i> Home</a>
-            <a href="/rag/test" class="nav-link"><i class="fas fa-comments"></i> Ask AI Guide</a>
+            <a href="https://travel-search-suggestion.web.app" class="nav-link"><i class="fas fa-home"></i> Home</a>
+            <a href="https://rag-frontend-e4375.web.app/rag/test" class="nav-link"><i class="fas fa-comments"></i> Ask AI Guide</a>
         </div>
     </div>
 
@@ -317,9 +324,9 @@
         const suggestionsDiv = document.getElementById("suggestions");
         const resultsDiv = document.getElementById("results");
         
-        // Update the getSuggestions function with loading indicator
+        // Update the getSuggestions function to check query length
         async function getSuggestions(query) {
-            if (!query) {
+            if (!query || query.length < 3) {
                 suggestionsDiv.style.display = "none";
                 return [];
             }
@@ -345,11 +352,22 @@
                         'Content-Type': 'application/json'
                     }
                 });
+                
                 if (!response.ok) {
                     suggestionsDiv.innerHTML = '<div class="suggestion-item">No matches found</div>';
                     return [];
                 }
+                
                 const suggestions = await response.json();
+                
+                // If no suggestions found
+                if (suggestions.length === 0) {
+                    suggestionsDiv.innerHTML = '<div class="suggestion-item">No matches found</div>';
+                }
+                
+                // Debug log to check matching
+                console.log("Received suggestions:", suggestions);
+                
                 return suggestions;
             } catch (error) {
                 console.error("Error fetching suggestions:", error);
@@ -407,44 +425,97 @@
             resultsDiv.scrollIntoView({ behavior: "smooth" });
         }
 
+        // Remove the highlighting functionality from the highlightMatch function
+        function highlightMatch(text, query) {
+            // Simply return the text without any highlighting
+            return text;
+        }
+
         // Event listener for input in the search bar
         searchBar.addEventListener("input", async () => {
             const input = searchBar.value.trim();
-            const suggestions = await getSuggestions(input);
+            
+            // Only search if we have at least 3 characters
+            if (input.length >= 3) {
+                const suggestions = await getSuggestions(input);
 
-            // Clear previous suggestions
-            suggestionsDiv.innerHTML = "";
-            suggestionsDiv.style.display = suggestions.length > 0 ? "block" : "none";
+                // Clear previous suggestions
+                suggestionsDiv.innerHTML = "";
+                suggestionsDiv.style.display = suggestions.length > 0 ? "block" : "none";
 
-            // Add new suggestions
-            suggestions.forEach(suggestion => {
-                const div = document.createElement("div");
-                div.className = "suggestion-item";
-                div.innerHTML = `<i class="fas fa-map-marker-alt" style="margin-right: 8px; color: #4c9eaf;"></i> ${suggestion.display}`;
-                div.addEventListener("click", () => {
-                    // Auto-fill the search bar with the selected suggestion
-                    searchBar.value = suggestion.value;
-                    suggestionsDiv.style.display = "none";
+                // Check if we have exact matches first (contains the input string)
+                const exactMatches = suggestions.filter(suggestion => 
+                    suggestion.display.toLowerCase().includes(input.toLowerCase())
+                );
+
+                // Sort exact matches to appear first, maintaining backend scoring within each group
+                const sortedSuggestions = [
+                    ...exactMatches,
+                    ...suggestions.filter(suggestion => 
+                        !exactMatches.includes(suggestion)
+                    )
+                ];
+                
+                // Add sorted suggestions
+                sortedSuggestions.forEach(suggestion => {
+                    const div = document.createElement("div");
+                    div.className = "suggestion-item";
                     
-                    // Show the location details
-                    showLocationDetails(suggestion);
+                    // Use appropriate icon based on category
+                    let icon = "map-marker-alt";
+                    if (suggestion.category) {
+                        const category = suggestion.category.toLowerCase();
+                        if (category.includes("hotel")) icon = "hotel";
+                        if (category.includes("restaurant")) icon = "utensils";
+                        if (category.includes("transport")) icon = "train";
+                        if (category.includes("monument")) icon = "landmark";
+                    }
+                    
+                    div.innerHTML = `<i class="fas fa-${icon}" style="margin-right: 8px; color: #4c9eaf;"></i> ${highlightMatch(suggestion.display, input)}`;
+                    
+                    div.addEventListener("click", () => {
+                        // Auto-fill the search bar with the selected suggestion
+                        searchBar.value = suggestion.value;
+                        suggestionsDiv.style.display = "none";
+                        
+                        // Show the location details
+                        showLocationDetails(suggestion);
+                    });
+                    suggestionsDiv.appendChild(div);
                 });
-                suggestionsDiv.appendChild(div);
-            });
-        });
-
-        // Hide suggestions when clicking outside
-        document.addEventListener("click", (e) => {
-            if (!searchBar.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+            } else {
+                // Clear and hide suggestions if input is less than 3 characters
+                suggestionsDiv.innerHTML = "";
                 suggestionsDiv.style.display = "none";
             }
         });
-        
-        // Function to use popular search
+
+        // Function to handle popular search tag clicks
         function usePopularSearch(element) {
-            searchBar.value = element.textContent;
-            searchBar.dispatchEvent(new Event('input'));
-            searchBar.focus();
+            // Get the text from the clicked element
+            const searchText = element.textContent;
+            
+            // Set the search bar value
+            searchBar.value = searchText;
+            
+            // Trigger a search
+            getSuggestions(searchText).then(suggestions => {
+                // Find the matching suggestion
+                const matchingSuggestion = suggestions.find(suggestion => 
+                    suggestion.display.toLowerCase() === searchText.toLowerCase()
+                );
+                
+                if (matchingSuggestion) {
+                    // Show details for the matching location
+                    showLocationDetails(matchingSuggestion);
+                } else if (suggestions.length > 0) {
+                    // If no exact match, use the first suggestion
+                    showLocationDetails(suggestions[0]);
+                }
+                
+                // Hide suggestions
+                suggestionsDiv.style.display = "none";
+            });
         }
     </script>
 </body>

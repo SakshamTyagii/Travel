@@ -3,26 +3,87 @@ import os
 import pickle
 import sys
 import traceback
+import logging
 from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
 from sentence_transformers import SentenceTransformer, util
-import torch
 from fuzzywuzzy import fuzz
 from pytrie import StringTrie
+import requests  # Add this import for the geocoding functions
+from dotenv import load_dotenv  # Add this to load your .env file
 
 from flask import Blueprint
+import json  # Import json for loading enhanced places data
+from datetime import datetime
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Simple in-memory storage for user history and popularity tracking
+# For production, use a proper database
+user_search_history = {}
+popular_searches = {}
 
 # Create a Blueprint instead of a Flask app
 app = Blueprint('search', __name__)
 
 # Set up logging for the application
-import logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[logging.StreamHandler(sys.stdout)]
 )
 logger = logging.getLogger(__name__)
+
+# Google Maps geocoding functions
+def geocode(address):
+    """Convert address to coordinates"""
+    api_key = os.environ.get('GOOGLE_MAPS_API_KEY', '')
+    if not api_key:
+        logger.warning("No Google Maps API key found in environment variables")
+        return None
+        
+    url = f"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={api_key}"
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            if data['status'] == 'OK':
+                location = data['results'][0]['geometry']['location']
+                return {
+                    'lat': location['lat'],
+                    'lng': location['lng'],
+                    'formatted_address': data['results'][0]['formatted_address']
+                }
+            else:
+                logger.warning(f"Geocoding error: {data['status']}")
+        else:
+            logger.warning(f"Geocoding API returned status code: {response.status_code}")
+    except Exception as e:
+        logger.error(f"Error in geocoding: {str(e)}")
+    return None
+
+def reverse_geocode(lat, lng):
+    """Convert coordinates to address"""
+    api_key = os.environ.get('GOOGLE_MAPS_API_KEY', '')
+    if not api_key:
+        logger.warning("No Google Maps API key found in environment variables")
+        return None
+        
+    url = f"https://maps.googleapis.com/maps/api/geocode/json?latlng={lat},{lng}&key={api_key}"
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            if data['status'] == 'OK':
+                return data['results'][0]['formatted_address']
+            else:
+                logger.warning(f"Reverse geocoding error: {data['status']}")
+        else:
+            logger.warning(f"Reverse geocoding API returned status code: {response.status_code}")
+    except Exception as e:
+        logger.error(f"Error in reverse geocoding: {str(e)}")
+    return None
 
 # Update file paths to use correct directory structure and OS-agnostic paths
 # For GCP deployment, we need to ensure data files are in the same directory as the app
@@ -44,6 +105,7 @@ else:
 
 appsheet_csv = os.path.join(data_dir, "appsheet.csv")
 embeddings_file = os.path.join(data_dir, "embeddings.pkl")
+enhanced_places_file = os.path.join(data_dir, "enhanced_places.json")
 
 # Print paths for debugging
 logger.info(f"Data directory: {data_dir}")
@@ -408,6 +470,18 @@ except Exception as e:
     embeddings = torch.tensor(np.zeros((max(1, len(search_terms)), 384)))
     logger.warning(f"Created fallback embeddings with shape {embeddings.shape}")
 
+# Try to load enhanced places data if available
+places_data = []
+try:
+    if os.path.exists(enhanced_places_file):
+        with open(enhanced_places_file, "r", encoding="utf-8") as f:
+            places_data = json.load(f)
+            logger.info(f"Loaded {len(places_data)} places from enhanced data file")
+    else:
+        logger.warning(f"Enhanced places file not found: {enhanced_places_file}")
+except Exception as e:
+    logger.error(f"Error loading enhanced places data: {str(e)}")
+
 # CORS(main_app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 @app.route('/')
@@ -426,17 +500,34 @@ def get_locations():
     return jsonify(locations_data)
 
 @app.route('/suggest', methods=['GET'])
-@app.route('/api/query', methods=['GET'])  # Adding this alias route to handle requests to /api/query
-@app.route('/search/suggest', methods=['GET'])  # Another alias that might be used
+@app.route('/api/query', methods=['GET'])
+@app.route('/search/suggest', methods=['GET'])
 def suggest():
     try:
         query = request.args.get('query', '').strip().lower()
+        user_id = request.args.get('user_id')
+        user_location = request.args.get('location')
+        
         logger.info(f"Received search query: '{query}' via {request.path}")
         
         if not query:
             logger.info("Empty query, returning empty list")
             return jsonify([])
 
+        # Track this search in user history if user_id is provided
+        if user_id:
+            if user_id not in user_search_history:
+                user_search_history[user_id] = []
+            
+            user_search_history[user_id].append({
+                "query": query,
+                "timestamp": datetime.now().isoformat(),
+                "location": user_location
+            })
+        
+        # Update search popularity
+        update_search_popularity(query)
+        
         # Split query into components (e.g., "Delhi Airport" -> ["delhi", "airport"])
         query_parts = query.split()
         logger.info(f"Query parts: {query_parts}")
@@ -593,11 +684,27 @@ def suggest():
                             "score": fuzzy_score / 100.0 + 0.5
                         })
 
-        # Filter matches with score > 0.5, sort by score, limit to top 5
+        # ---- Add this at the end of the function, right before sorting matches ----
+        
+        # Apply personalization if user_id is provided
+        if user_id and user_id in user_search_history and len(user_search_history[user_id]) > 1:
+            # Get user's recent searches
+            recent_searches = user_search_history[user_id][-10:]
+            recent_queries = [s.get("query", "").lower() for s in recent_searches]
+            
+            # Use query history for personalization
+            for idx, match in enumerate(matches):
+                # Check if this result relates to previously searched items
+                if any(previous_query in match["value"].lower() for previous_query in recent_queries):
+                    # Boost based on recency and frequency
+                    boost_factor = 0.1
+                    match["score"] += boost_factor
+                    logger.info(f"Boosted match {match['display']} based on user history")
+        
         matches = [match for match in matches if match["score"] > 0.5]
         matches.sort(key=lambda x: x["score"], reverse=True)
         matches = matches[:5]
-
+        
         logger.info(f"Returning {len(matches)} matches")
         for idx, match in enumerate(matches):
             logger.info(f"Match {idx+1}: {match['display']} (score: {match['score']:.2f})")
@@ -613,6 +720,34 @@ def suggest():
         
         # Return error response
         response = jsonify({"error": str(e)})
+        response.status_code = 500
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+
+@app.route('/record_selection', methods=['POST'])
+def record_selection():
+    """Record when a user selects an item from search results"""
+    try:
+        user_id = request.args.get('user_id')
+        query = request.args.get('query', '')
+        selected_item = request.json if request.is_json else None
+        
+        logger.info(f"Recording selection for query '{query}' by user {user_id}")
+        
+        update_search_popularity(query, selected_item)
+        if user_id and user_id in user_search_history:
+            # Update the last search with selection
+            if user_search_history[user_id]:
+                user_search_history[user_id][-1]["selected_item"] = selected_item
+        
+        response = jsonify({"status": "success"})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+    except Exception as e:
+        logger.error(f"Error recording selection: {str(e)}")
+        logger.error(traceback.format_exc())
+        
+        response = jsonify({"status": "error", "message": str(e)})
         response.status_code = 500
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
@@ -677,5 +812,73 @@ def health_check():
     """Health check endpoint"""
     return "OK", 200
 
+# Add more sophisticated phonetic matching
+def advanced_phonetic_matching(query, text):
+    """Get more sophisticated phonetic matching using multiple algorithms"""
+    # Soundex matching
+    soundex_score = 1.0 if jellyfish.soundex(query) == jellyfish.soundex(text) else 0.0
+    
+    # Metaphone matching (better for Indian place names)
+    metaphone_score = 1.0 if jellyfish.metaphone(query) == jellyfish.metaphone(text) else 0.0
+    
+    # NYSIIS matching
+    nysiis_score = 1.0 if jellyfish.nysiis(query) == jellyfish.nysiis(text) else 0.0
+    
+    # Jaro-Winkler distance (good for short strings)
+    jaro_score = jellyfish.jaro_winkler(query, text)
+    
+    # Return the best score
+    return max(soundex_score, metaphone_score, nysiis_score, jaro_score)
+
+# Enhance with intent recognition
+def detect_search_intent(query):
+    """Detect search intent from query"""
+    intents = {
+        'transport': ['airport', 'station', 'bus', 'metro', 'train', 'railway'],
+        'food': ['restaurant', 'food', 'cafe', 'eat', 'dining'],
+        'accommodation': ['hotel', 'stay', 'hostel', 'resort'],
+        'attraction': ['visit', 'see', 'attraction', 'monument', 'temple', 'fort'],
+        'shopping': ['mall', 'market', 'shop', 'buy'],
+    }
+    
+    query_words = set(query.lower().split())
+    
+    detected_intents = []
+    for intent, keywords in intents.items():
+        if any(keyword in query for keyword in keywords):
+            detected_intents.append(intent)
+    
+    return detected_intents
+
+def update_search_popularity(query, selected_item=None):
+    """Update popularity of search terms and selected items"""
+    query = query.lower()
+    # Update query popularity
+    if query in popular_searches:
+        popular_searches[query] += 1
+    else:
+        popular_searches[query] = 1
+    
+    # Update selected item popularity if provided
+    if selected_item:
+        item_id = selected_item.get("value")  # Using value as ID since your items have this field
+        if item_id:
+            if "item_popularity" not in popular_searches:
+                popular_searches["item_popularity"] = {}
+            
+            if item_id in popular_searches["item_popularity"]:
+                popular_searches["item_popularity"][item_id] += 1
+            else:
+                popular_searches["item_popularity"][item_id] = 1
+
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    # Create a Flask application
+    from flask import Flask
+    flask_app = Flask(__name__)
+    
+    # Register the blueprint
+    flask_app.register_blueprint(app)
+    
+    # Run the application
+    port = int(os.environ.get('PORT', 5000))
+    flask_app.run(debug=True, host='0.0.0.0', port=port)
