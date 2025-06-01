@@ -14,7 +14,7 @@ def read_urls_and_ids(file_path):
 def download_video(url, video_id, index):
     try:
         # Make request to local API
-        api_url = f"http://localhost:3000/api/video?postUrl={url}"
+        api_url = f"https://instagram-reels-downloader-tau.vercel.app/api/video?postUrl={url}"
         
         # Create videos directory if it doesn't exist
         os.makedirs('videos', exist_ok=True)
