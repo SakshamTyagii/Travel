@@ -156,9 +156,11 @@ async def get_suggestions(query: str = Query(..., min_length=3)):  # Enforce min
                 additional_queries.append(query.replace(city, alias))
             if alias in query:
                 additional_queries.append(query.replace(alias, city))
-        
-        # Search with all query variants
+          # Search with all query variants
         for current_query in additional_queries:
+            # Tokenize the query to match individual words as well
+            query_words = current_query.lower().split()
+            
             for place in places_data:
                 name = place.get("name", "").lower()
                 area = place.get("area", "").lower() if place.get("area") else ""
@@ -168,14 +170,48 @@ async def get_suggestions(query: str = Query(..., min_length=3)):  # Enforce min
                 place_key = f"{name}_{area}"
                 if place_key in seen_names:
                     continue
+                  # Enhanced matching logic with priority for starting matches
+                should_include = False
                 
-                # Check if query matches name, area, or any synonym
-                if (current_query in name or 
-                    (area and current_query in area) or 
-                    any(current_query in syn for syn in synonyms)):
-                    
-                    # Calculate relevance score
+                # 1. Check if name or any word in name starts with query
+                if (name.startswith(current_query) or 
+                    any(word.startswith(current_query) for word in name.split())):
+                    should_include = True
+                
+                # 2. Check if any synonym starts with query
+                elif any(syn.startswith(current_query) or 
+                        any(word.startswith(current_query) for word in syn.split()) 
+                        for syn in synonyms):
+                    should_include = True
+                
+                # 3. Fall back to contains matches
+                elif (current_query in name or 
+                      (area and current_query in area) or 
+                      any(current_query in syn for syn in synonyms)):
+                    should_include = True
+                
+                # 4. Multi-word match: all words from query should be present
+                elif len(query_words) > 1:
+                    all_content = f"{name} {area} {' '.join(synonyms)}"
+                    if all(word in all_content for word in query_words):
+                        should_include = True
+                
+                # 5. Partial word matches for single longer words
+                elif len(query_words) == 1 and len(query_words[0]) >= 3:
+                    word = query_words[0]
+                    if (word in name or 
+                        (area and word in area) or 
+                        any(word in syn for syn in synonyms)):                        should_include = True
+                
+                if should_include:
+                    # Calculate relevance score with new prioritization
                     score = calculate_relevance_score(current_query, name, area, synonyms)
+                    
+                    # Additional boost for multi-word matches
+                    if len(query_words) > 1:
+                        all_content = f"{name} {area} {' '.join(synonyms)}"
+                        if all(word in all_content for word in query_words):
+                            score += 2.0
                     
                     results.append(
                         SearchResult(
@@ -185,7 +221,7 @@ async def get_suggestions(query: str = Query(..., min_length=3)):  # Enforce min
                             area=place.get("area", "Delhi"),
                             description=place.get("description", ""),
                             match_score=score,
-                            match_info={"match_type": "query_match"}
+                            match_info={"query": current_query}
                         )
                     )
                     
@@ -209,34 +245,97 @@ def calculate_relevance_score(query, name, area, synonyms):
     score = 0.0
     match_info = {}
     
-    # Direct name match gets highest score
-    if query in name:
+    query_words = query.lower().split()
+    query_lower = query.lower()
+    name_lower = name.lower()
+    area_lower = area.lower()
+    
+    # 1. HIGHEST PRIORITY: Words that START with the query
+    if name_lower.startswith(query_lower):
+        score += 10.0  # Highest score for names starting with query
+        match_info["name_starts_with"] = True
+    elif any(word.startswith(query_lower) for word in name_lower.split()):
+        score += 8.0  # High score if any word in name starts with query
+        match_info["name_word_starts_with"] = True
+    
+    # Check synonyms for starting matches
+    for syn in synonyms:
+        syn_lower = syn.lower()
+        if syn_lower.startswith(query_lower):
+            score += 7.0
+            match_info["synonym_starts_with"] = True
+            break
+        elif any(word.startswith(query_lower) for word in syn_lower.split()):
+            score += 6.0
+            match_info["synonym_word_starts_with"] = True
+            break
+    
+    # 2. MEDIUM PRIORITY: Exact substring matches (original logic)
+    if query_lower in name_lower and not name_lower.startswith(query_lower):
         score += 5.0
-        match_info["name_match"] = True
+        match_info["name_contains"] = True
     
     # Area match gets medium score
-    if query in area:
+    if query_lower in area_lower:
         score += 3.0
         match_info["area_match"] = True
     
-    # Synonym matches
-    synonym_matches = [syn for syn in synonyms if query in syn]
+    # Synonym contains matches (lower priority than starts with)
+    synonym_matches = [syn for syn in synonyms if query_lower in syn.lower() and not syn.lower().startswith(query_lower)]
     if synonym_matches:
         score += 4.0
-        match_info["synonym_matches"] = synonym_matches[:3]  # Limit to 3 for brevity
+        match_info["synonym_contains"] = synonym_matches[:3]  # Limit to 3 for brevity
     
-    # Word match boost
-    query_words = query.split()
+    # Multi-word scoring: check if individual words appear
     if len(query_words) > 1:
         name_word_score = word_match_score(query_words, name)
-        score += name_word_score * 2.0
+        area_word_score = word_match_score(query_words, area)
+        
+        # Score based on how many query words match
+        score += name_word_score * 3.0  # Name matches are more important
+        score += area_word_score * 2.0  # Area matches are secondary
         
         # Check synonyms for multi-word matches
+        best_synonym_score = 0
         for syn in synonyms:
             syn_word_score = word_match_score(query_words, syn)
-            if syn_word_score > 0.5:  # Only boost if more than half the words match
-                score += 1.0
-                break
+            best_synonym_score = max(best_synonym_score, syn_word_score)
+        
+        score += best_synonym_score * 2.5
+        
+        # Bonus for exact word order in name
+        if all(word in name for word in query_words):
+            # Check if words appear in same order
+            name_words = name.split()
+            query_positions = []
+            for qword in query_words:
+                for i, nword in enumerate(name_words):
+                    if qword in nword:
+                        query_positions.append(i)
+                        break
+            
+            if len(query_positions) == len(query_words) and query_positions == sorted(query_positions):
+                score += 1.0  # Bonus for maintaining word order
+      # Single word partial matching
+    elif len(query_words) == 1:
+        word = query_words[0]
+        if len(word) >= 3:  # Reduced from 4 to 3 for better matching
+            # Check if any word in the name starts with the query word
+            name_words = name_lower.split()
+            if any(nword.startswith(word) for nword in name_words):
+                score += 4.0  # Higher score for word starting matches
+            elif word in name_lower:
+                score += 2.0  # Lower score for contains matches
+            
+            # Check synonyms
+            for syn in synonyms:
+                syn_words = syn.lower().split()
+                if any(sword.startswith(word) for sword in syn_words):
+                    score += 3.0
+                    break
+                elif word in syn.lower():
+                    score += 1.5
+                    break
     
     return score
 

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -59,19 +60,21 @@
         }
         
         .chat-messages {
-            padding: 20px;
-            max-height: 400px;
+            padding: 25px;
+            max-height: 500px; /* Increased height */
             overflow-y: auto;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            scroll-behavior: smooth;
         }
         
         .message {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeIn 0.3s forwards;
+            animation: slideIn 0.4s ease-out forwards;
         }
         
-        @keyframes fadeIn {
+        @keyframes slideIn {
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -88,11 +91,14 @@
         
         .message-bubble {
             display: inline-block;
-            padding: 12px 18px;
+            padding: 16px 20px; /* Increased padding */
             border-radius: 18px;
-            max-width: 80%;
-            margin-top: 5px;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+            max-width: 85%; /* Increased max width */
+            margin-top: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            line-height: 1.6; /* Better line spacing */
+            word-wrap: break-word;
+            white-space: pre-wrap; /* Preserve line breaks */
         }
         
         .user-message .message-bubble {
@@ -102,9 +108,21 @@
         }
         
         .ai-message .message-bubble {
-            background-color: #f1f1f1;
-            color: #333;
-            border-top-left-radius: 4px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 1px solid #e1e8ed;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        .ai-message .message-bubble::before {
+            content: '';
+            position: absolute;
+            left: -1px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(135deg, #4c9eaf, #65c6bd);
+            border-radius: 2px;
         }
         
         .message-avatar {
@@ -257,6 +275,72 @@
             color: #65c6bd;
             transform: translateX(3px);
         }
+
+        /* Enhanced message container */
+        .chat-messages {
+            padding: 25px;
+            max-height: 500px; /* Increased height */
+            overflow-y: auto;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        }
+
+        /* Smooth scrolling */
+        .chat-messages {
+            scroll-behavior: smooth;
+        }
+
+        /* Better message spacing */
+        .message {
+            margin-bottom: 25px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideIn 0.4s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Enhanced AI message styling */
+        .ai-message .message-bubble {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 1px solid #e1e8ed;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        .ai-message .message-bubble::before {
+            content: '';
+            position: absolute;
+            left: -1px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(135deg, #4c9eaf, #65c6bd);
+            border-radius: 2px;
+        }
+
+        /* Typography improvements */
+        .ai-message .message-bubble {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #2c3e50;
+        }
+
+        /* Highlight styling */
+        .highlight {
+            background: linear-gradient(135deg, rgba(76, 158, 175, 0.15), rgba(101, 198, 189, 0.15));
+            color: #2c3e50;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            border: 1px solid rgba(76, 158, 175, 0.2);
+        }
+    
     </style>
 </head>
 <body>
@@ -329,6 +413,28 @@
             return null; // Not a simple query
         }
 
+        const API_URL = "https://enhanced-travel-rag-422083294581.asia-south1.run.app";
+
+        async function queryRAG(userQuery) {
+            try {
+                const response = await fetch(`${API_URL}/query`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: userQuery
+                    })
+                });
+                
+                const data = await response.json();
+                return data.response; // Enhanced service returns 'response' field
+            } catch (error) {
+                console.error('Error querying RAG:', error);
+                return 'Sorry, I encountered an error. Please try again.';
+            }
+        }
+
         async function askQuestion() {
             const query = queryInput.value.trim();
             if (!query) return;
@@ -352,20 +458,13 @@
             
             try {
                 // Use the current URL for the API endpoint
-                const API_URL = "https://rag-service-422083294581.asia-south1.run.app";
-                const response = await fetch(`${API_URL}/query`, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ query })
-                });
-                
-                const data = await response.json();
+                const response = await queryRAG(query);
                 
                 // Remove loading indicator
                 removeLoadingIndicator(loadingId);
                 
                 // Display the response
-                addMessage(data.answer || "I'm not sure about that. Could you try asking in a different way?", 'ai');
+                addMessage(response || "I'm not sure about that. Could you try asking in a different way?", 'ai');
             } catch (error) {
                 // Remove loading indicator
                 removeLoadingIndicator(loadingId);
@@ -377,6 +476,28 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
         
+        /* Enhanced message formatting function */
+        function formatResponse(text) {
+            if (!text) return text;
+            
+            // Split into paragraphs and format
+            let formatted = text
+                // Add line breaks for better readability
+                .replace(/\*\*([^*]+)\*\*/g, '<strong class="highlight">$1</strong>')
+                // Format timing information
+                .replace(/(\d{1,2}:\d{2}\s*(AM|PM))/g, '<span class="highlight">$1</span>')
+                // Format prices
+                .replace(/(₹\d+[-–]\d+|₹\d+)/g, '<span class="highlight">$1</span>')
+                // Format bullet points
+                .replace(/^\*\s+(.+)$/gm, '<div class="bullet-point">$1</div>')
+                // Add paragraph breaks
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>');
+        
+            return `<p>${formatted}</p>`;
+        }
+        
+        /* Updated addMessage function with better formatting */
         function addMessage(text, sender) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${sender}-message`;
@@ -392,15 +513,24 @@
             
             const bubble = document.createElement('div');
             bubble.className = 'message-bubble';
-            bubble.textContent = text;
+            
+            if (sender === 'ai') {
+                // Format AI responses beautifully
+                bubble.innerHTML = formatResponse(text);
+                bubble.classList.add('ai-response');
+            } else {
+                bubble.textContent = text;
+            }
             
             messageDiv.appendChild(avatar);
             messageDiv.appendChild(bubble);
             
             chatMessages.appendChild(messageDiv);
             
-            // Scroll to bottom
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            // Scroll to bottom smoothly
+            setTimeout(() => {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 100);
         }
         
         function addLoadingIndicator() {
