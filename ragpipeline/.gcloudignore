@@ -1,0 +1,11 @@
+.gcloudignore
+.git
+.gitignore
+README.md
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+test_*
+*_test.py
