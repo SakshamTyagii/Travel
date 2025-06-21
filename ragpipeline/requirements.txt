@@ -8,3 +8,4 @@ pydantic==2.5.0
 python-multipart==0.0.6
 google-auth==2.23.4
 google-cloud-core==2.3.3
+aiohttp==3.8.5

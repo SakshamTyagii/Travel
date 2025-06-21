@@ -239,15 +239,118 @@
             background: #4c9eaf;
             color: white;
             border-color: #4c9eaf;
-        }
-
-        /* Highlighting */
+        }        /* Highlighting */
         .highlight {
             background: rgba(76, 158, 175, 0.1);
             color: #0f766e;
             padding: 2px 6px;
             border-radius: 4px;
             font-weight: 600;
+        }
+        
+        /* Enhanced Content Formatting */
+        .query-header {
+            background: linear-gradient(135deg, #4c9eaf, #65c6bd);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin: 16px 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(76, 158, 175, 0.2);
+        }
+        
+        .query-header .emoji {
+            font-size: 18px;
+        }
+        
+        .query-header .header-text {
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 16px 0 8px 0;
+            padding: 8px 12px;
+            background: rgba(76, 158, 175, 0.05);
+            border-left: 4px solid #4c9eaf;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .section-header .section-emoji {
+            font-size: 16px;
+        }
+        
+        .section-header strong {
+            color: #1e293b;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .bullet-point {
+            margin: 6px 0;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .bullet-point::before {
+            content: "•";
+            color: #4c9eaf;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 16px;
+        }
+        
+        .numbered-point {
+            margin: 6px 0;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.5;
+            counter-increment: list-counter;
+        }
+        
+        .numbered-point::before {
+            content: counter(list-counter) ".";
+            color: #4c9eaf;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        /* Specialized Highlights */
+        .time-highlight {
+            background: rgba(34, 197, 94, 0.1);
+            color: #166534;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-family: 'Monaco', 'Consolas', monospace;
+        }
+        
+        .price-highlight {
+            background: rgba(249, 115, 22, 0.1);
+            color: #ea580c;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-family: 'Monaco', 'Consolas', monospace;
+        }
+        
+        .measurement-highlight {
+            background: rgba(168, 85, 247, 0.1);
+            color: #7c2d12;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-family: 'Monaco', 'Consolas', monospace;
         }
 
         /* Input Area */
@@ -465,6 +568,177 @@
             color: #4c9eaf;
         }
 
+        /* Image Gallery Styles - Compact Version */
+.image-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    margin: 15px 0;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    max-height: 200px;
+    overflow: hidden;
+}
+
+.image-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.image-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+.image-item img {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+    border-radius: 8px;
+}
+
+.image-item img:hover {
+    opacity: 0.9;
+}
+
+.image-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: white;
+    padding: 4px 6px;
+    font-size: 10px;
+    text-align: center;
+    border-radius: 0 0 8px 8px;
+}
+
+/* Image Modal - Enhanced */
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.9);
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    position: relative;
+    margin: auto;
+    display: block;
+    width: 90%;
+    max-width: 800px;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(-50%) scale(0.8); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(-50%) scale(1); 
+    }
+}
+
+.modal-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    max-height: 80vh;
+    object-fit: contain;
+}
+
+.close-modal {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    color: white;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-modal:hover {
+    color: #4c9eaf;
+    background: rgba(0,0,0,0.7);
+}
+
+/* Show more images button */
+.show-more-images {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #4c9eaf, #65c6bd);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.show-more-images:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(76, 158, 175, 0.3);
+}
+
+/* Mobile responsive for compact images */
+@media (max-width: 768px) {
+    .image-gallery {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 8px;
+        padding: 10px;
+        max-height: 150px;
+    }
+    
+    .image-item img {
+        height: 60px;
+    }
+    
+    .image-caption {
+        font-size: 9px;
+        padding: 2px 4px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+        transform: none;
+        top: 5%;
+    }
+}
         /* Responsive Design */
         @media (max-width: 768px) {
             .main-container {
@@ -680,13 +954,14 @@
             query = query.toLowerCase().trim();
             
             const responses = {
-                'hi': "Hey there! 👋 Ready to discover Delhi's wonders?",
-                'hello': "Hello! 👋 How can I help you explore Delhi today?",
-                'hey': "Hey there! 👋 Ready to discover Delhi's wonders?",
-                'thanks': "You're very welcome! 😊 Any other Delhi questions?",
-                'thank you': "You're very welcome! 😊 Any other Delhi questions?",
-                'bye': "Goodbye! 👋 Have an amazing time in Delhi!",
-                'goodbye': "Goodbye! 👋 Have an amazing time in Delhi!"
+                'ssup': "Hey there! 👋 I am good, what about you friend?",
+                'hi': "Hey there! 👋 Ready to discover India's wonders?",
+                'hello': "Hello! 👋 How can I help you explore India today?",
+                'hey': "Hey there! 👋 Ready to discover India's wonders?",
+                'thanks': "You're very welcome! 😊 Any other questions?",
+                'thank you': "You're very welcome! 😊 Any other questions?",
+                'bye': "Goodbye! 👋 Have an amazing time Travelling!",
+                'goodbye': "Goodbye! 👋 Have an amazing time Travelling!"
             };
             
             return responses[query] || null;
@@ -753,21 +1028,48 @@
                 addMessage("Sorry, I encountered an error. Please try again.", 'ai');
                 console.error("API error:", error);
             }
-        }
-
-        function formatResponse(text) {
+        }        function formatResponse(text) {
             if (!text) return text;
             
-            let formatted = text
+            // Enhanced formatting for structured responses
+            let formatted = text;
+            
+            // Handle emoji headers and sections
+            formatted = formatted
+                // Query type headers with emojis
+                .replace(/^(🕐|⏰|💰|🎫|🚗|🚇|🍽️|👥|👨‍👩‍👧‍👦|🌤️|🛡️|🏢|🎯|📸|🏛️|🛍️|🧹|🙏|📋|⭐|📍|⏱️|♿|🌙|💕|👥)\s*\*\*([^*]+)\*\*/gm, '<div class="query-header"><span class="emoji">$1</span> <span class="header-text">$2</span></div>')
+                
+                // Section headers with emojis
+                .replace(/^(📍|⏰|🌅|📅|⚠️|💡|🎫|💳|🏷️|📊|🚇|🚕|🅿️|🗺️|🏪|🥘|💰|⭐|🚫|👥|✅|🚼|🎯|🛂|📄|🌐|💱|🏦|🗣️|🎭|🚌|🏨|🍛|🎒|🏥|📱|🎉)\s*\*\*([^*]+)\*\*/gm, '<div class="section-header"><span class="section-emoji">$1</span> <strong>$2</strong></div>')
+                
+                // Regular bold text
                 .replace(/\*\*([^*]+)\*\*/g, '<strong class="highlight">$1</strong>')
                 .replace(/__([^_]+)__/g, '<strong class="highlight">$1</strong>')
+                
+                // Italic text
                 .replace(/\*([^*\n]+)\*/g, '<em>$1</em>')
-                .replace(/(\d{1,2}:\d{2}\s*(AM|PM|am|pm))/g, '<span class="highlight">$1</span>')
-                .replace(/(₹\s*\d+[-–~]\d+|₹\s*\d+)/g, '<span class="highlight">$1</span>')
-                .replace(/(Rs\.?\s*\d+[-–~]\d+|Rs\.?\s*\d+)/g, '<span class="highlight">$1</span>')
-                .replace(/(\d+\.?\d*\s*(minutes|hours|mins|hrs|km|meters|feet|days|weeks))/gi, '<span class="highlight">$1</span>')
-                .replace(/^\s*[\*\-\+]\s+(.+)$/gm, '<div style="margin-left: 15px; margin-bottom: 6px;">• $1</div>')
-                .replace(/^\s*\d+\.\s+(.+)$/gm, '<div style="margin-left: 15px; margin-bottom: 6px;">$1</div>')
+                
+                // Time highlighting
+                .replace(/(\d{1,2}:\d{2}\s*(AM|PM|am|pm))/g, '<span class="time-highlight">$1</span>')
+                
+                // Price highlighting
+                .replace(/(₹\s*\d+[-–~]\d+|₹\s*\d+)/g, '<span class="price-highlight">$1</span>')
+                .replace(/(Rs\.?\s*\d+[-–~]\d+|Rs\.?\s*\d+)/g, '<span class="price-highlight">$1</span>')
+                
+                // Measurements and durations
+                .replace(/(\d+\.?\d*\s*(minutes|hours|mins|hrs|km|meters|feet|days|weeks))/gi, '<span class="measurement-highlight">$1</span>')
+                
+                // Handle bullet points with better styling
+                .replace(/^\s*[\*\-\+]\s+(.+)$/gm, '<div class="bullet-point">• $1</div>')
+                
+                // Handle numbered lists
+                .replace(/^\s*\d+\.\s+(.+)$/gm, '<div class="numbered-point">$1</div>')
+                
+                // Handle structure indicators
+                .replace(/\*\*Structure your response with[^:]*:\*\*/gi, '')
+                .replace(/Structure your response with[^:]*:/gi, '')
+                
+                // Clean up extra newlines and convert to proper breaks
                 .replace(/\n{3,}/g, '\n\n')
                 .replace(/\n\n/g, '<br><br>')
                 .replace(/\n/g, '<br>');
@@ -790,12 +1092,29 @@
             bubble.className = 'message-bubble';
             
             if (sender === 'ai') {
-                bubble.innerHTML = formatResponse(text);
+                // Format the response text
+                let formattedText = formatResponse(text);
+                
+                // Check if response mentions images (but don't extract URLs from text anymore)
+                const mentionsImages = text.toLowerCase().includes('high-quality images') || 
+                                      text.toLowerCase().includes('photos available') ||
+                                      text.toLowerCase().includes('professional photos');
+                
+                // Add the formatted text (no URLs should be in it now)
+                bubble.innerHTML = formattedText;
+                content.appendChild(bubble);
+                
+                // If images are mentioned, add a placeholder gallery
+                // We'll fetch images separately via API call
+                if (mentionsImages) {
+                    // Try to extract location name from the text or use a different method
+                    addImageGalleryForLocation(content, text);
+                }
             } else {
+                // User message
                 bubble.textContent = text;
+                content.appendChild(bubble);
             }
-            
-            content.appendChild(bubble);
             
             // Add message actions for AI messages
             if (sender === 'ai' && showActions) {
@@ -819,6 +1138,104 @@
             messageDiv.appendChild(content);
             messagesContainer.appendChild(messageDiv);
             scrollToBottom();
+        }
+
+        // New function to fetch and display images for a location
+        async function addImageGalleryForLocation(contentElement, responseText) {
+            // Extract location name from response (you might need to adjust this logic)
+            const locationMatch = responseText.match(/(?:about|of|at|visiting)\s+([A-Z][a-z\s]+(?:Fort|Temple|Beach|Gate|Tomb|Palace|Museum|Church|Cathedral))/i);
+            
+            if (!locationMatch) return;
+            
+            const locationName = locationMatch[1].trim();
+            
+            try {
+                // Fetch complete location data with images
+                const response = await fetch(`${API_URL}/location-complete/${encodeURIComponent(locationName)}`);
+                const data = await response.json();
+                
+                if (data.high_quality_images && data.high_quality_images.length > 0) {
+                    const imageGallery = document.createElement('div');
+                    imageGallery.className = 'image-gallery';
+                    
+                    // Show first 6 images
+                    const imagesToShow = data.high_quality_images.slice(0, 6);
+                    
+                    imagesToShow.forEach((photo, index) => {
+                        const imageItem = document.createElement('div');
+                        imageItem.className = 'image-item';
+                        
+                        imageItem.innerHTML = `
+                            <img src="${photo.url}" alt="${locationName} Image ${index + 1}" 
+                                 onclick="openImageModal('${photo.url}')" 
+                                 loading="lazy" 
+                                 onerror="this.parentElement.style.display='none'">
+                            <div class="image-caption">Image ${index + 1}</div>
+                        `;
+                        
+                        imageGallery.appendChild(imageItem);
+                    });
+                    
+                    // Add "show more" button if there are more images
+                    if (data.high_quality_images.length > 6) {
+                        const showMoreBtn = document.createElement('button');
+                        showMoreBtn.className = 'show-more-images';
+                        showMoreBtn.textContent = `View all ${data.high_quality_images.length} images`;
+                        showMoreBtn.onclick = () => showAllImages(data.high_quality_images, locationName);
+                        imageGallery.appendChild(showMoreBtn);
+                    }
+                    
+                    contentElement.appendChild(imageGallery);
+                }
+            } catch (error) {
+                console.error('Error fetching images:', error);
+            }
+        }
+
+        // Function to show all images in a modal
+        function showAllImages(allImages, locationName) {
+            // Create a modal with all images
+            let modal = document.getElementById('allImagesModal');
+            
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'allImagesModal';
+                modal.className = 'image-modal';
+                modal.innerHTML = `
+                    <div class="modal-content" style="max-width: 90%; width: auto;">
+                        <span class="close-modal" onclick="closeAllImagesModal()">&times;</span>
+                        <h3 style="color: white; text-align: center; margin-bottom: 20px;">All Images of ${locationName}</h3>
+                        <div class="all-images-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; max-height: 70vh; overflow-y: auto;"></div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+            
+            const grid = modal.querySelector('.all-images-grid');
+            grid.innerHTML = '';
+            
+            allImages.forEach((photo, index) => {
+                const img = document.createElement('img');
+                img.src = photo.url;
+                img.alt = `${locationName} Image ${index + 1}`;
+                img.style.cssText = 'width: 100%; height: 150px; object-fit: cover; border-radius: 8px; cursor: pointer;';
+                img.onclick = () => {
+                    closeAllImagesModal();
+                    openImageModal(photo.url);
+                };
+                grid.appendChild(img);
+            });
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAllImagesModal() {
+            const modal = document.getElementById('allImagesModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
         }
 
         function addLoadingMessage() {
@@ -934,6 +1351,56 @@
 
         // Add click event to header for navigation
         document.querySelector('.header-icon').addEventListener('click', toggleNav);
+
+       //open imaage model
+       // Image modal functions
+        function openImageModal(imageUrl) {
+            let modal = document.getElementById('imageModal');
+            
+            // Create modal if it doesn't exist
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'imageModal';
+                modal.className = 'image-modal';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <span class="close-modal" onclick="closeImageModal()">&times;</span>
+                        <img class="modal-image" src="" alt="Full Size Image">
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                
+                // Close modal when clicking outside the image
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeImageModal();
+                    }
+                });
+            }
+            
+            // Set image source and show modal
+            const modalImg = modal.querySelector('.modal-image');
+            modalImg.src = imageUrl;
+            modal.style.display = 'block';
+            
+            // Prevent body scrolling when modal is open
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeImageModal();
+            }
+        }); 
     </script>
 </body>
 </html>
